@@ -69,8 +69,9 @@
         </footer>
 
         <!-- Giscus 评论 -->
-        <div class="mt-12">
-          <div id="comments"></div>
+        <div class="mt-12 pt-8 border-t border-[#d0d7de] dark:border-[#30363d]">
+          <h2 class="text-2xl font-bold mb-6">评论</h2>
+          <div id="giscus-comments" class="giscus"></div>
         </div>
       </div>
     </article>
@@ -78,10 +79,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useThemeStore } from '@/stores/theme'
 
 const router = useRouter()
+const themeStore = useThemeStore()
 
 const readingProgress = ref(0)
 
@@ -123,8 +126,51 @@ function updateReadingProgress() {
   readingProgress.value = Math.min((scrollTop / docHeight) * 100, 100)
 }
 
+function loadGiscus() {
+  // 移除已存在的 giscus iframe
+  const existingGiscus = document.querySelector('.giscus-frame')
+  if (existingGiscus) {
+    existingGiscus.remove()
+  }
+
+  const script = document.createElement('script')
+  script.src = 'https://giscus.app/client.js'
+  script.setAttribute('data-repo', 'Rkyzzy/I-test-website')
+  script.setAttribute('data-repo-id', 'R_placeholder')
+  script.setAttribute('data-category', 'Announcements')
+  script.setAttribute('data-category-id', 'DIC_placeholder')
+  script.setAttribute('data-mapping', 'pathname')
+  script.setAttribute('data-strict', '0')
+  script.setAttribute('data-reactions-enabled', '1')
+  script.setAttribute('data-emit-metadata', '0')
+  script.setAttribute('data-input-position', 'bottom')
+  script.setAttribute('data-theme', themeStore.isDark ? 'dark' : 'light')
+  script.setAttribute('data-lang', 'zh-CN')
+  script.setAttribute('data-loading', 'lazy')
+  script.crossOrigin = 'anonymous'
+  script.async = true
+  
+  const container = document.getElementById('giscus-comments')
+  if (container) {
+    container.appendChild(script)
+  }
+}
+
+watch(() => themeStore.isDark, () => {
+  // 主题切换时更新 giscus
+  const iframe = document.querySelector('iframe.giscus-frame') as HTMLIFrameElement
+  if (iframe) {
+    const theme = themeStore.isDark ? 'dark' : 'light'
+    iframe.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      'https://giscus.app'
+    )
+  }
+})
+
 onMounted(() => {
   window.addEventListener('scroll', updateReadingProgress)
+  loadGiscus()
 })
 
 onUnmounted(() => {

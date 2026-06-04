@@ -8,11 +8,36 @@
 
 | 日期 | 版本 | 主要内容 | 状态 |
 |------|------|---------|------|
-| 2026-06-04 | v0.3 | 添加 GitHub Pages 部署配置，代码已推送到 GitHub | 🚧 进行中 |
+| 2026-06-04 | v0.4 | 添加 Giscus 评论系统，完成配置文档 | 🚧 进行中 |
+| 2026-06-04 | v0.3 | 添加 GitHub Pages 部署配置，代码已推送到 GitHub | ✅ 完成 |
 
 ---
 
 ## 📝 变更记录
+
+### [2026-06-04] v0.4 - 添加 Giscus 评论系统
+
+**已完成：**
+- ✅ 集成 Giscus 评论系统到博客文章页面
+- ✅ 实现深色/浅色主题自动切换
+- ✅ 支持中文界面
+- ✅ 创建详细的 Giscus 配置指南文档
+- ✅ 代码已推送到 GitHub
+
+**技术实现：**
+- 在 `src/pages/BlogPost.vue` 中添加 Giscus 组件
+- 动态加载 Giscus 脚本并配置参数
+- 实现主题切换监听器，自动更新 Giscus 主题
+- 支持 GitHub Discussions 自动同步评论
+
+**待完成：**
+- ⚠️ 用户需要在 GitHub 上启用 Discussions
+- ⚠️ 用户需要获取真实的 repo-id 和 category-id
+- ⚠️ 更新代码中的占位符
+
+**相关文件：**
+- [src/pages/BlogPost.vue](file:///workspace/src/pages/BlogPost.vue) - 博客文章页面（含评论组件）
+- [docs/Giscus-Setup-Guide.md](file:///workspace/docs/Giscus-Setup-Guide.md) - Giscus 配置指南
 
 ### [2026-06-04] v0.2 - 项目初始化完成
 

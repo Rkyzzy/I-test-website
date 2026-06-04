@@ -32,8 +32,8 @@ interface Education {
 export const useProfileStore = defineStore('profile', () => {
   // 基本信息 - 需要用户提供
   const name = ref('Your Name')
-  const title = ref('Software Engineer')
-  const bio = ref('Passionate about building great products.')
+  const title = ref('Full Stack Developer')
+  const bio = ref('Passionate about building great products and pushing the boundaries of technology.')
   const avatar = ref('/avatar.png')
 
   // 社交链接

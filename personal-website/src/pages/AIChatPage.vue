@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- 页面标题 -->
-    <div class="py-8 px-6 border-b border-light-border dark:border-dark-border">
+    <div class="py-8 px-6 border-b border-[#d0d7de] dark:border-[#30363d]">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold mb-2">AI 对话</h1>
-        <p class="text-light-muted dark:text-dark-muted">
+        <p class="text-[#656d76] dark:text-[#8b949e]">
           与基于我的知识训练的 AI 对话助手交流
         </p>
       </div>
@@ -16,11 +16,11 @@
       <div ref="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-6">
         <!-- 欢迎消息 -->
         <div v-if="messages.length === 0" class="flex flex-col items-center justify-center h-full text-center">
-          <div class="w-20 h-20 rounded-full bg-accent-blue/10 flex items-center justify-center mb-6">
+          <div class="w-20 h-20 rounded-full bg-[rgba(88,166,255,0.1)] flex items-center justify-center mb-6">
             <span class="text-4xl">🤖</span>
           </div>
           <h2 class="text-2xl font-semibold mb-2">你好！我是 AI 助手</h2>
-          <p class="text-light-muted dark:text-dark-muted max-w-md mb-8">
+          <p class="text-[#656d76] dark:text-[#8b949e] max-w-md mb-8">
             我是基于主人的知识库训练的 AI。你可以问我关于他的技能、经历、项目等问题。
           </p>
 
@@ -30,7 +30,7 @@
               v-for="q in quickQuestions"
               :key="q"
               @click="sendMessage(q)"
-              class="tag cursor-pointer hover:border-accent-blue hover:text-accent-blue"
+              class="tag cursor-pointer hover:border-[#58a6ff] hover:text-[#58a6ff]"
             >
               {{ q }}
             </button>
@@ -50,7 +50,7 @@
           <div
             :class="[
               'w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center',
-              msg.role === 'user' ? 'bg-accent-blue' : 'bg-accent-green'
+              msg.role === 'user' ? 'bg-[#58a6ff]' : 'bg-[#3fb950]'
             ]"
           >
             <span v-if="msg.role === 'user'">👤</span>
@@ -62,8 +62,8 @@
             :class="[
               'max-w-[70%] rounded-2xl px-4 py-3',
               msg.role === 'user'
-                ? 'bg-accent-blue text-white'
-                : 'bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border'
+                ? 'bg-[#58a6ff] text-white'
+                : 'bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d]'
             ]"
           >
             <p class="whitespace-pre-wrap">{{ msg.content }}</p>
@@ -72,21 +72,21 @@
 
         <!-- 加载动画 -->
         <div v-if="isLoading" class="flex gap-4 animate-fade-in">
-          <div class="w-10 h-10 rounded-full bg-accent-green flex items-center justify-center">
+          <div class="w-10 h-10 rounded-full bg-[#3fb950] flex items-center justify-center">
             <span>🤖</span>
           </div>
-          <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-2xl px-4 py-3">
+          <div class="bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] rounded-2xl px-4 py-3">
             <div class="flex gap-1">
-              <span class="w-2 h-2 bg-accent-green rounded-full animate-bounce" style="animation-delay: 0ms"></span>
-              <span class="w-2 h-2 bg-accent-green rounded-full animate-bounce" style="animation-delay: 150ms"></span>
-              <span class="w-2 h-2 bg-accent-green rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+              <span class="w-2 h-2 bg-[#3fb950] rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+              <span class="w-2 h-2 bg-[#3fb950] rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+              <span class="w-2 h-2 bg-[#3fb950] rounded-full animate-bounce" style="animation-delay: 300ms"></span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- 输入区域 -->
-      <div class="p-6 border-t border-light-border dark:border-dark-border">
+      <div class="p-6 border-t border-[#d0d7de] dark:border-[#30363d]">
         <div class="flex gap-4">
           <n-input
             v-model:value="inputMessage"
@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, onMounted, watch } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 
 interface Message {
@@ -271,7 +271,6 @@ onMounted(() => {
 })
 
 // 保存历史记录
-import { watch } from 'vue'
 watch(
   messages,
   (newMessages) => {

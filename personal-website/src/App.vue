@@ -1,17 +1,17 @@
 <template>
   <n-config-provider :theme="themeStore.isDark ? darkTheme : undefined" :theme-overrides="themeOverrides">
     <n-message-provider>
-      <div class="min-h-screen bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text transition-colors duration-300">
+      <div class="min-h-screen" :class="{ dark: themeStore.isDark }">
         <!-- 顶部导航 -->
         <header
           :class="[
             'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-            isScrolled ? 'glass border-b border-light-border dark:border-dark-border' : ''
+            isScrolled ? 'glass border-b border-[#d0d7de] dark:border-[#30363d]' : ''
           ]"
         >
           <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <!-- Logo -->
-            <router-link to="/" class="text-xl font-bold hover:text-accent-blue transition-colors">
+            <router-link to="/" class="text-xl font-bold hover:text-[#58a6ff] transition-colors">
               {{ profile.name }}
             </router-link>
 
@@ -21,8 +21,8 @@
                 v-for="link in navLinks"
                 :key="link.path"
                 :to="link.path"
-                class="text-sm font-medium text-light-muted dark:text-dark-muted hover:text-accent-blue transition-colors"
-                active-class="text-accent-blue"
+                class="text-sm font-medium text-[#656d76] dark:text-[#8b949e] hover:text-[#58a6ff] transition-colors"
+                active-class="text-[#58a6ff]"
               >
                 {{ link.name }}
               </router-link>
@@ -33,7 +33,7 @@
               <!-- 主题切换 -->
               <button
                 @click="themeStore.toggleTheme"
-                class="w-10 h-10 rounded-full bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border flex items-center justify-center hover:border-accent-blue transition-colors"
+                class="w-10 h-10 rounded-full bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center hover:border-[#58a6ff] transition-colors"
                 :title="themeStore.isDark ? '切换到浅色模式' : '切换到深色模式'"
               >
                 <svg v-if="themeStore.isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
               <!-- 移动端菜单按钮 -->
               <button
                 @click="isMobileMenuOpen = !isMobileMenuOpen"
-                class="md:hidden w-10 h-10 rounded-full bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border flex items-center justify-center"
+                class="md:hidden w-10 h-10 rounded-full bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path v-if="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -60,7 +60,7 @@
           <!-- 移动端菜单 -->
           <div
             v-show="isMobileMenuOpen"
-            class="md:hidden glass border-b border-light-border dark:border-dark-border"
+            class="md:hidden glass border-b border-[#d0d7de] dark:border-[#30363d]"
           >
             <div class="px-6 py-4 space-y-4">
               <router-link
@@ -68,8 +68,8 @@
                 :key="link.path"
                 :to="link.path"
                 @click="isMobileMenuOpen = false"
-                class="block text-sm font-medium text-light-muted dark:text-dark-muted hover:text-accent-blue transition-colors"
-                active-class="text-accent-blue"
+                class="block text-sm font-medium text-[#656d76] dark:text-[#8b949e] hover:text-[#58a6ff] transition-colors"
+                active-class="text-[#58a6ff]"
               >
                 {{ link.name }}
               </router-link>
@@ -87,8 +87,8 @@
         </main>
 
         <!-- 页脚 -->
-        <footer class="py-8 px-6 border-t border-light-border dark:border-dark-border">
-          <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-light-muted dark:text-dark-muted">
+        <footer class="py-8 px-6 border-t border-[#d0d7de] dark:border-[#30363d]">
+          <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#656d76] dark:text-[#8b949e]">
             <p>© 2024 {{ profile.name }}. All rights reserved.</p>
             <div class="flex gap-6">
               <a
@@ -97,7 +97,7 @@
                 :href="link.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="hover:text-accent-blue transition-colors"
+                class="hover:text-[#58a6ff] transition-colors"
               >
                 {{ link.name }}
               </a>

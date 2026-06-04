@@ -4,7 +4,7 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
       <!-- 动态背景 -->
       <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-accent-blue/10 via-transparent to-accent-green/10"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-[rgba(88,166,255,0.1)] via-transparent to-[rgba(63,185,80,0.1)]"></div>
         <div class="particles absolute inset-0"></div>
       </div>
 
@@ -12,7 +12,7 @@
       <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <!-- 头像 -->
         <div class="mb-8 animate-fade-in">
-          <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-dark-border dark:border-dark-border">
+          <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-[#30363d]">
             <img :src="profile.avatar" :alt="profile.name" class="w-full h-full object-cover" />
           </div>
         </div>
@@ -21,12 +21,12 @@
         <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-slide-up">
           {{ profile.name }}
         </h1>
-        <p class="text-2xl md:text-3xl text-light-muted dark:text-dark-muted mb-6 animate-slide-up delay-100">
+        <p class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-6 animate-slide-up delay-100">
           {{ profile.title }}
         </p>
 
         <!-- 简介 -->
-        <p class="text-lg text-light-text/80 dark:text-dark-text/80 max-w-2xl mx-auto mb-8 animate-slide-up delay-200">
+        <p class="text-lg text-[rgba(31,35,40,0.8)] dark:text-[rgba(230,237,243,0.8)] max-w-2xl mx-auto mb-8 animate-slide-up delay-200">
           {{ profile.bio }}
         </p>
 
@@ -38,7 +38,7 @@
             :href="link.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-12 h-12 rounded-full bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border flex items-center justify-center hover:border-accent-blue hover:text-accent-blue transition-all duration-200 hover:-translate-y-1"
+            class="w-12 h-12 rounded-full bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center hover:border-[#58a6ff] hover:text-[#58a6ff] transition-all duration-200 hover:-translate-y-1"
           >
             <component :is="getSocialIcon(link.icon)" class="w-5 h-5" />
           </a>
@@ -56,7 +56,7 @@
 
         <!-- 向下滚动提示 -->
         <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg class="w-6 h-6 text-light-muted dark:text-dark-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-[#656d76] dark:text-[#8b949e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
           </svg>
         </div>
@@ -73,7 +73,7 @@
             :key="skill.name"
             class="card text-center group cursor-pointer"
           >
-            <span class="text-lg font-medium group-hover:text-accent-blue transition-colors">
+            <span class="text-lg font-medium group-hover:text-[#58a6ff] transition-colors">
               {{ skill.name }}
             </span>
             <div class="mt-3 flex justify-center gap-1">
@@ -81,7 +81,7 @@
                 v-for="i in 5"
                 :key="i"
                 class="w-2 h-2 rounded-full transition-colors"
-                :class="i <= skill.level ? 'bg-accent-blue' : 'bg-light-border dark:bg-dark-border'"
+                :style="{ backgroundColor: i <= skill.level ? '#58a6ff' : (isDark ? '#30363d' : '#d0d7de') }"
               ></span>
             </div>
           </div>
@@ -90,26 +90,26 @@
     </section>
 
     <!-- 统计数据 Section -->
-    <section class="py-20 px-6 bg-light-card/50 dark:bg-dark-card/50">
+    <section class="py-20 px-6 bg-[#f6f8fa] dark:bg-[#161b22]/50">
       <div class="max-w-4xl mx-auto">
         <div class="grid grid-cols-3 gap-8 text-center">
           <div>
-            <div class="text-4xl md:text-5xl font-bold text-accent-blue mb-2">
+            <div class="text-4xl md:text-5xl font-bold text-[#58a6ff] mb-2">
               {{ profile.stats.yearsOfExperience }}+
             </div>
-            <div class="text-light-muted dark:text-dark-muted">年经验</div>
+            <div class="text-[#656d76] dark:text-[#8b949e]">年经验</div>
           </div>
           <div>
-            <div class="text-4xl md:text-5xl font-bold text-accent-green mb-2">
+            <div class="text-4xl md:text-5xl font-bold text-[#3fb950] mb-2">
               {{ profile.stats.projectsCompleted }}+
             </div>
-            <div class="text-light-muted dark:text-dark-muted">完成项目</div>
+            <div class="text-[#656d76] dark:text-[#8b949e]">完成项目</div>
           </div>
           <div>
-            <div class="text-4xl md:text-5xl font-bold text-accent-yellow mb-2">
+            <div class="text-4xl md:text-5xl font-bold text-[#d29922] mb-2">
               {{ profile.stats.technologies }}+
             </div>
-            <div class="text-light-muted dark:text-dark-muted">技术栈</div>
+            <div class="text-[#656d76] dark:text-[#8b949e]">技术栈</div>
           </div>
         </div>
       </div>
@@ -122,18 +122,18 @@
         <div class="grid md:grid-cols-3 gap-6">
           <router-link to="/blog" class="card group">
             <div class="text-4xl mb-4">📝</div>
-            <h3 class="text-xl font-semibold mb-2 group-hover:text-accent-blue transition-colors">博客</h3>
-            <p class="text-light-muted dark:text-dark-muted">分享我的想法与技术文章</p>
+            <h3 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">博客</h3>
+            <p class="text-[#656d76] dark:text-[#8b949e]">分享我的想法与技术文章</p>
           </router-link>
           <router-link to="/work" class="card group">
             <div class="text-4xl mb-4">💼</div>
-            <h3 class="text-xl font-semibold mb-2 group-hover:text-accent-blue transition-colors">工作</h3>
-            <p class="text-light-muted dark:text-dark-muted">实习、工作与研究方向</p>
+            <h3 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">工作</h3>
+            <p class="text-[#656d76] dark:text-[#8b949e]">实习、工作与研究方向</p>
           </router-link>
           <router-link to="/ai" class="card group">
             <div class="text-4xl mb-4">🤖</div>
-            <h3 class="text-xl font-semibold mb-2 group-hover:text-accent-blue transition-colors">AI 对话</h3>
-            <p class="text-light-muted dark:text-dark-muted">与我训练的 AI 对话</p>
+            <h3 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">AI 对话</h3>
+            <p class="text-[#656d76] dark:text-[#8b949e]">与我训练的 AI 对话</p>
           </router-link>
         </div>
       </div>
@@ -144,8 +144,11 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import { useProfileStore } from '@/stores/profile'
+import { useThemeStore } from '@/stores/theme'
 
 const profile = useProfileStore()
+const themeStore = useThemeStore()
+const isDark = themeStore.isDark
 
 // 社交图标组件
 const icons: Record<string, any> = {

@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto">
       <!-- 页面标题 -->
       <h1 class="text-4xl font-bold mb-4">工作与研究</h1>
-      <p class="text-light-muted dark:text-dark-muted mb-12">
+      <p class="text-[#656d76] dark:text-[#8b949e] mb-12">
         实习经历、全职工作、研究方向与学术成果
       </p>
 
@@ -22,11 +22,11 @@
               <div class="flex justify-between items-start mb-4">
                 <div>
                   <h3 class="text-xl font-semibold">{{ exp.title }}</h3>
-                  <p class="text-accent-blue">{{ exp.company }}</p>
+                  <p class="text-[#58a6ff]">{{ exp.company }}</p>
                 </div>
                 <span class="tag">{{ exp.period }}</span>
               </div>
-              <p class="text-light-muted dark:text-dark-muted mb-4">
+              <p class="text-[#656d76] dark:text-[#8b949e] mb-4">
                 {{ exp.description }}
               </p>
               <ul class="space-y-2">
@@ -35,7 +35,7 @@
                   :key="i"
                   class="flex items-start gap-2"
                 >
-                  <svg class="w-5 h-5 text-accent-green flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-[#3fb950] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
                   <span>{{ highlight }}</span>
@@ -61,11 +61,11 @@
               <div class="flex justify-between items-start mb-4">
                 <div>
                   <h3 class="text-xl font-semibold">{{ edu.school }}</h3>
-                  <p class="text-accent-blue">{{ edu.degree }} · {{ edu.major }}</p>
+                  <p class="text-[#58a6ff]">{{ edu.degree }} · {{ edu.major }}</p>
                 </div>
                 <span class="tag">{{ edu.period }}</span>
               </div>
-              <p v-if="edu.honors" class="text-light-muted dark:text-dark-muted">
+              <p v-if="edu.honors" class="text-[#656d76] dark:text-[#8b949e]">
                 {{ edu.honors }}
               </p>
             </div>
@@ -80,7 +80,7 @@
         </h2>
         <div class="card">
           <h3 class="text-xl font-semibold mb-4">人工智能与机器学习</h3>
-          <p class="text-light-muted dark:text-dark-muted leading-relaxed">
+          <p class="text-[#656d76] dark:text-[#8b949e] leading-relaxed">
             研究重点包括深度学习模型的优化与压缩、知识蒸馏技术、
             以及在边缘设备上的部署优化。致力于将前沿研究成果转化为实际应用。
           </p>
@@ -98,16 +98,16 @@
             :key="index"
             class="card group"
           >
-            <h3 class="text-lg font-semibold mb-2 group-hover:text-accent-blue transition-colors">
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">
               {{ paper.title }}
             </h3>
-            <p class="text-sm text-light-muted dark:text-dark-muted mb-2">
+            <p class="text-sm text-[#656d76] dark:text-[#8b949e] mb-2">
               {{ paper.authors }}
             </p>
-            <p class="text-sm text-accent-blue mb-3">
+            <p class="text-sm text-[#58a6ff] mb-3">
               {{ paper.venue }} · {{ paper.year }}
             </p>
-            <p class="text-light-muted dark:text-dark-muted text-sm mb-4">
+            <p class="text-[#656d76] dark:text-[#8b949e] text-sm mb-4">
               {{ paper.abstract }}
             </p>
             <a
@@ -137,17 +137,17 @@
             :key="index"
             class="card group cursor-pointer"
           >
-            <div class="aspect-video rounded-lg overflow-hidden mb-4 bg-light-bg dark:bg-dark-bg">
+            <div class="aspect-video rounded-lg overflow-hidden mb-4 bg-[#f6f8fa] dark:bg-[#161b22]">
               <img
                 :src="project.cover"
                 :alt="project.name"
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
               />
             </div>
-            <h3 class="text-lg font-semibold mb-2 group-hover:text-accent-blue transition-colors">
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">
               {{ project.name }}
             </h3>
-            <p class="text-light-muted dark:text-dark-muted text-sm mb-4">
+            <p class="text-[#656d76] dark:text-[#8b949e] text-sm mb-4">
               {{ project.description }}
             </p>
             <div class="flex flex-wrap gap-2 mb-4">

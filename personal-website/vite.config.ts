@@ -13,7 +13,5 @@ export default defineConfig({
     port: 5173,
     host: true,
   },
-  base: process.env.NODE_ENV === 'production' 
-    ? '/personal-website/' 
-    : '/',
+  base: '/I-test-website/',
 })

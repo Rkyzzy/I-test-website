@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto">
       <!-- 页面标题 -->
       <h1 class="text-4xl font-bold mb-4">博客</h1>
-      <p class="text-light-muted dark:text-dark-muted mb-12">
+      <p class="text-[#656d76] dark:text-[#8b949e] mb-12">
         记录思考，分享技术，持续成长
       </p>
 
@@ -29,7 +29,7 @@
             @click="selectedTag = selectedTag === tag ? null : tag"
             :class="[
               'tag cursor-pointer',
-              selectedTag === tag && 'border-accent-blue text-accent-blue'
+              selectedTag === tag && 'border-[#58a6ff] text-[#58a6ff]'
             ]"
           >
             {{ tag }}
@@ -58,20 +58,20 @@
             <!-- 内容 -->
             <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
-                <span class="text-sm text-light-muted dark:text-dark-muted">
+                <span class="text-sm text-[#656d76] dark:text-[#8b949e]">
                   {{ post.date }}
                 </span>
-                <span class="text-sm text-light-muted dark:text-dark-muted">·</span>
-                <span class="text-sm text-light-muted dark:text-dark-muted">
+                <span class="text-sm text-[#656d76] dark:text-[#8b949e]">·</span>
+                <span class="text-sm text-[#656d76] dark:text-[#8b949e]">
                   {{ post.readTime }} 分钟阅读
                 </span>
               </div>
 
-              <h2 class="text-xl font-semibold mb-2 group-hover:text-accent-blue transition-colors">
+              <h2 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">
                 {{ post.title }}
               </h2>
 
-              <p class="text-light-muted dark:text-dark-muted mb-4 line-clamp-2">
+              <p class="text-[#656d76] dark:text-[#8b949e] mb-4 line-clamp-2">
                 {{ post.excerpt }}
               </p>
 
@@ -88,7 +88,7 @@
       <!-- 空状态 -->
       <div v-if="filteredPosts.length === 0" class="text-center py-20">
         <div class="text-6xl mb-4">📭</div>
-        <p class="text-light-muted dark:text-dark-muted">暂无文章</p>
+        <p class="text-[#656d76] dark:text-[#8b949e]">暂无文章</p>
       </div>
     </div>
   </div>

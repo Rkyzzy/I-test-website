@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen">
     <!-- 阅读进度条 -->
-    <div class="fixed top-0 left-0 right-0 h-1 bg-light-border dark:bg-dark-border z-50">
+    <div class="fixed top-0 left-0 right-0 h-1 bg-[#d0d7de] dark:bg-[#30363d] z-50">
       <div
-        class="h-full bg-accent-blue transition-all duration-150"
+        class="h-full bg-[#58a6ff] transition-all duration-150"
         :style="{ width: `${readingProgress}%` }"
       ></div>
     </div>
@@ -13,7 +13,7 @@
         <!-- 返回按钮 -->
         <button
           @click="goBack"
-          class="mb-8 text-light-muted dark:text-dark-muted hover:text-accent-blue transition-colors flex items-center gap-2"
+          class="mb-8 text-[#656d76] dark:text-[#8b949e] hover:text-[#58a6ff] transition-colors flex items-center gap-2"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -23,7 +23,7 @@
 
         <!-- 文章头部 -->
         <header class="mb-12">
-          <div class="flex items-center gap-3 mb-4 text-sm text-light-muted dark:text-dark-muted">
+          <div class="flex items-center gap-3 mb-4 text-sm text-[#656d76] dark:text-[#8b949e]">
             <span>{{ post.date }}</span>
             <span>·</span>
             <span>{{ post.readTime }} 分钟阅读</span>
@@ -48,13 +48,13 @@
         </div>
 
         <!-- 文章内容 -->
-        <div class="prose dark:prose-invert max-w-none">
+        <div class="blog-content">
           <p>{{ post.content }}</p>
           <!-- 这里可以使用 markdown 渲染库 -->
         </div>
 
         <!-- 文章底部 -->
-        <footer class="mt-16 pt-8 border-t border-light-border dark:border-dark-border">
+        <footer class="mt-16 pt-8 border-t border-[#d0d7de] dark:border-[#30363d]">
           <div class="flex justify-between items-center">
             <button
               @click="sharePost"
@@ -133,19 +133,30 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.prose {
-  @apply text-lg leading-relaxed;
+.blog-content {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
-.prose p {
-  @apply mb-6;
+.blog-content p {
+  margin-bottom: 1.5rem;
 }
 
-.prose h2 {
-  @apply text-2xl font-bold mt-12 mb-6;
+.blog-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 }
 
-.prose code {
-  @apply px-2 py-1 rounded bg-light-card dark:bg-dark-card text-accent-blue;
+.blog-content code {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #f6f8fa;
+  color: #58a6ff;
+}
+
+.blog-content code {
+  background-color: #161b22;
 }
 </style>

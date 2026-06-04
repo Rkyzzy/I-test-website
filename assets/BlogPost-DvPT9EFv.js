@@ -1,0 +1,15 @@
+import{F as e,L as t,M as n,N as r,Tt as i,g as a,i as o,p as s,rt as c,u as l,v as u,wt as d}from"./runtime-core.esm-bundler-rZaFWmUE.js";import{r as f}from"./index-DeZQ_AZV.js";import{t as p}from"./_plugin-vue_export-helper-BDNMzG2s.js";var m={class:`min-h-screen`},h={class:`fixed top-0 left-0 right-0 h-1 bg-[#d0d7de] dark:bg-[#30363d] z-50`},g={class:`py-20 px-6`},_={class:`max-w-3xl mx-auto`},v={class:`mb-12`},y={class:`flex items-center gap-3 mb-4 text-sm text-[#656d76] dark:text-[#8b949e]`},b={class:`text-4xl md:text-5xl font-bold mb-6`},x={class:`flex gap-2 mb-8`},S={class:`rounded-xl overflow-hidden mb-12`},C=[`src`,`alt`],w={class:`blog-content`},T=p(u({__name:`BlogPost`,setup(u){let p=f(),T=c(0),E=c({title:`Vue 3 入门指南`,date:`2024-01-15`,readTime:8,tags:[`技术`,`前端`,`Vue`],cover:`https://picsum.photos/1200/600?random=1`,content:`这是一篇关于 Vue 3 入门的文章。Vue 3 是 Vue.js 的最新主要版本，带来了许多新特性和改进。
+
+## 组合式 API
+
+Vue 3 引入了组合式 API，这是一种新的编写组件逻辑的方式。通过 setup 函数，我们可以在同一个地方组织相关的代码。
+
+## 响应式系统
+
+Vue 3 的响应式系统基于 ES6 Proxy，相比 Vue 2 的 Object.defineProperty 更加高效和强大。
+
+## TypeScript 支持
+
+Vue 3 从一开始就是用 TypeScript 编写的，提供了完善的类型支持。
+
+让我们开始探索 Vue 3 的世界吧！`});function D(){p.back()}function O(){navigator.clipboard.writeText(window.location.href),alert(`链接已复制到剪贴板`)}function k(){let e=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;T.value=Math.min(e/t*100,100)}return n(()=>{window.addEventListener(`scroll`,k)}),r(()=>{window.removeEventListener(`scroll`,k)}),(n,r)=>(e(),s(`div`,m,[l(`div`,h,[l(`div`,{class:`h-full bg-[#58a6ff] transition-all duration-150`,style:d({width:`${T.value}%`})},null,4)]),l(`article`,g,[l(`div`,_,[l(`button`,{onClick:D,class:`mb-8 text-[#656d76] dark:text-[#8b949e] hover:text-[#58a6ff] transition-colors flex items-center gap-2`},[...r[0]||=[l(`svg`,{class:`w-4 h-4`,fill:`none`,stroke:`currentColor`,viewBox:`0 0 24 24`},[l(`path`,{"stroke-linecap":`round`,"stroke-linejoin":`round`,"stroke-width":`2`,d:`M15 19l-7-7 7-7`})],-1),a(` 返回 `,-1)]]),l(`header`,v,[l(`div`,y,[l(`span`,null,i(E.value.date),1),r[1]||=l(`span`,null,`·`,-1),l(`span`,null,i(E.value.readTime)+` 分钟阅读`,1)]),l(`h1`,b,i(E.value.title),1),l(`div`,x,[(e(!0),s(o,null,t(E.value.tags,t=>(e(),s(`span`,{key:t,class:`tag`},i(t),1))),128))])]),l(`div`,S,[l(`img`,{src:E.value.cover,alt:E.value.title,class:`w-full`},null,8,C)]),l(`div`,w,[l(`p`,null,i(E.value.content),1)]),l(`footer`,{class:`mt-16 pt-8 border-t border-[#d0d7de] dark:border-[#30363d]`},[l(`div`,{class:`flex justify-between items-center`},[l(`button`,{onClick:O,class:`btn btn-ghost flex items-center gap-2`},[...r[2]||=[l(`svg`,{class:`w-4 h-4`,fill:`none`,stroke:`currentColor`,viewBox:`0 0 24 24`},[l(`path`,{"stroke-linecap":`round`,"stroke-linejoin":`round`,"stroke-width":`2`,d:`M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z`})],-1),a(` 分享文章 `,-1)]])])]),r[3]||=l(`div`,{class:`mt-12`},[l(`div`,{id:`comments`})],-1)])])]))}}),[[`__scopeId`,`data-v-00b59dfc`]]);export{T as default};

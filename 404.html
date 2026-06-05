@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script>
+      // SPA fallback for GitHub Pages
+      var path = window.location.pathname;
+      var newUrl = '/I-test-website/' + path;
+      if (path.indexOf('/I-test-website/') !== 0) {
+        newUrl = '/I-test-website' + path;
+      }
+      if (path.endsWith('/')) {
+        newUrl = newUrl.substring(0, newUrl.length - 1);
+      }
+      window.location.replace(newUrl + window.location.search + window.location.hash);
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to the homepage...</p>
+  </body>
+</html>

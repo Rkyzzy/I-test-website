@@ -57,7 +57,7 @@ export const useProfileStore = defineStore('profile', () => {
       major: 'Artificial Intelligence',
       period: '2022 - 2024',
       location: 'Singapore',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Nanyang_Technological_University_logo.svg/320px-Nanyang_Technological_University_logo.svg.png',
+      logo: 'https://cdn.jsdelivr.net/gh/Rkyzzy/I-test-website@main/public/school-ntu.png',
       url: 'https://www.ntu.edu.sg',
     },
     {
@@ -67,7 +67,7 @@ export const useProfileStore = defineStore('profile', () => {
       major: 'Computer Science and Technology',
       period: '2018 - 2022',
       location: 'Shenzhen, China',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/SUSTech_Logo.svg/320px-SUSTech_Logo.svg.png',
+      logo: 'https://cdn.jsdelivr.net/gh/Rkyzzy/I-test-website@main/public/school-sustech.png',
       url: 'https://www.sustech.edu.cn',
     },
     {
@@ -78,7 +78,7 @@ export const useProfileStore = defineStore('profile', () => {
       period: '2020',
       location: 'Berkeley, CA, USA',
       isExchange: true,
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/320px-Seal_of_University_of_California%2C_Berkeley.svg.png',
+      logo: 'https://cdn.jsdelivr.net/gh/Rkyzzy/I-test-website@main/public/school-ucb.png',
       url: 'https://www.berkeley.edu',
     },
   ])

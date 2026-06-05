@@ -124,6 +124,7 @@ const isMobileMenuOpen = ref(false)
 const navLinks = [
   { name: '首页', path: '/' },
   { name: '博客', path: '/blog' },
+  { name: '教育', path: '/education' },
   { name: '工作', path: '/work' },
   { name: 'AI 对话', path: '/ai' },
 ]

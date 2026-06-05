@@ -23,17 +23,22 @@ interface Skill {
 
 interface Education {
   school: string
+  schoolEn: string
   degree: string
   major: string
   period: string
   honors?: string
+  logo: string
+  url: string
+  location: string
+  isExchange?: boolean
 }
 
 export const useProfileStore = defineStore('profile', () => {
-  // 基本信息 - 需要用户提供
-  const name = ref('Your Name')
-  const title = ref('Full Stack Developer')
-  const bio = ref('Passionate about building great products and pushing the boundaries of technology.')
+  // 基本信息
+  const name = ref('周子越')
+  const title = ref('Algorithm Engineer · 算法工程师')
+  const bio = ref('专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。')
   const avatar = ref('/avatar.png')
 
   // 社交链接
@@ -46,11 +51,35 @@ export const useProfileStore = defineStore('profile', () => {
   // 教育经历
   const education = ref<Education[]>([
     {
-      school: 'University Name',
-      degree: 'Bachelor/Master',
+      school: '南洋理工大学',
+      schoolEn: 'Nanyang Technological University',
+      degree: 'Master of Science',
+      major: 'Artificial Intelligence',
+      period: '2022 - 2024',
+      location: 'Singapore',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Nanyang_Technological_University_logo.svg/320px-Nanyang_Technological_University_logo.svg.png',
+      url: 'https://www.ntu.edu.sg',
+    },
+    {
+      school: '南方科技大学',
+      schoolEn: 'Southern University of Science and Technology',
+      degree: 'Bachelor of Engineering',
+      major: 'Computer Science and Technology',
+      period: '2018 - 2022',
+      location: 'Shenzhen, China',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/SUSTech_Logo.svg/320px-SUSTech_Logo.svg.png',
+      url: 'https://www.sustech.edu.cn',
+    },
+    {
+      school: '加州大学伯克利分校',
+      schoolEn: 'University of California, Berkeley',
+      degree: 'Exchange Student',
       major: 'Computer Science',
-      period: '2020 - 2024',
-      honors: 'GPA: 3.8/4.0',
+      period: '2020',
+      location: 'Berkeley, CA, USA',
+      isExchange: true,
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/320px-Seal_of_University_of_California%2C_Berkeley.svg.png',
+      url: 'https://www.berkeley.edu',
     },
   ])
 

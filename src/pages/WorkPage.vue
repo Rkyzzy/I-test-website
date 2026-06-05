@@ -51,24 +51,59 @@
         <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
           <span class="text-2xl">🎓</span> 教育背景
         </h2>
-        <div class="space-y-0">
+        <div class="space-y-6">
           <div
             v-for="(edu, index) in education"
             :key="index"
-            class="timeline-item"
+            class="card group cursor-pointer transition-all duration-300 hover:shadow-lg"
           >
-            <div class="card">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <h3 class="text-xl font-semibold">{{ edu.school }}</h3>
-                  <p class="text-[#58a6ff]">{{ edu.degree }} · {{ edu.major }}</p>
+            <a :href="edu.url" target="_blank" rel="noopener noreferrer" class="block">
+              <div class="flex flex-col md:flex-row gap-6 items-start">
+                <!-- 学校Logo -->
+                <div class="flex-shrink-0">
+                  <div class="w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center group-hover:border-[#58a6ff] transition-colors">
+                    <img
+                      :src="edu.logo"
+                      :alt="edu.school"
+                      class="w-14 h-14 md:w-16 md:h-16 object-contain"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <span class="tag">{{ edu.period }}</span>
+                
+                <!-- 学校信息 -->
+                <div class="flex-grow">
+                  <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-2">
+                    <div>
+                      <h3 class="text-xl font-bold group-hover:text-[#58a6ff] transition-colors">
+                        {{ edu.school }}
+                      </h3>
+                      <p class="text-[#656d76] dark:text-[#8b949e] text-sm">
+                        {{ edu.schoolEn }}
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span v-if="edu.isExchange" class="tag bg-[#fff8c5] dark:bg-[#1a1a0e] text-[#4d3800] dark:text-[#d29922] border-[#d29922]/30">
+                        交换生
+                      </span>
+                      <span class="tag">{{ edu.period }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="text-[#58a6ff] font-medium mb-2">
+                    {{ edu.degree }} · {{ edu.major }}
+                  </div>
+                  
+                  <div class="flex items-center gap-2 text-sm text-[#656d76] dark:text-[#8b949e]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span>{{ edu.location }}</span>
+                  </div>
+                </div>
               </div>
-              <p v-if="edu.honors" class="text-[#656d76] dark:text-[#8b949e]">
-                {{ edu.honors }}
-              </p>
-            </div>
+            </a>
           </div>
         </div>
       </section>

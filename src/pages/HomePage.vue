@@ -18,9 +18,12 @@
         </div>
 
         <!-- 姓名和头衔 -->
-        <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-slide-up">
+        <h1 class="text-5xl md:text-7xl font-bold mb-2 animate-slide-up">
           {{ profile.name }}
         </h1>
+        <h2 class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-4 animate-slide-up delay-50">
+          Ziyue Zhou
+        </h2>
         <p class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-6 animate-slide-up delay-100">
           {{ profile.title }}
         </p>

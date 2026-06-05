@@ -5,15 +5,8 @@
     <title>Redirecting...</title>
     <script>
       // SPA fallback for GitHub Pages
-      var path = window.location.pathname;
-      var newUrl = '/I-test-website/' + path;
-      if (path.indexOf('/I-test-website/') !== 0) {
-        newUrl = '/I-test-website' + path;
-      }
-      if (path.endsWith('/')) {
-        newUrl = newUrl.substring(0, newUrl.length - 1);
-      }
-      window.location.replace(newUrl + window.location.search + window.location.hash);
+      // Redirect all 404s to the main index.html, Vue Router will handle the routing
+      window.location.href = '/I-test-website/' + window.location.pathname.slice('/I-test-website'.length) + window.location.search + window.location.hash;
     </script>
   </head>
   <body>

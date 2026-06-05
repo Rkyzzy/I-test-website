@@ -136,9 +136,9 @@ function loadGiscus() {
   const script = document.createElement('script')
   script.src = 'https://giscus.app/client.js'
   script.setAttribute('data-repo', 'Rkyzzy/I-test-website')
-  script.setAttribute('data-repo-id', 'R_placeholder')
+  script.setAttribute('data-repo-id', 'R_kgDOSw0IUw')
   script.setAttribute('data-category', 'Announcements')
-  script.setAttribute('data-category-id', 'DIC_placeholder')
+  script.setAttribute('data-category-id', 'DIC_kwDOSw0IU84C-fiW')
   script.setAttribute('data-mapping', 'pathname')
   script.setAttribute('data-strict', '0')
   script.setAttribute('data-reactions-enabled', '1')

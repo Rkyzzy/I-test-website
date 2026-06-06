@@ -44,33 +44,13 @@
       "level": 5
     },
     {
-      "name": "TensorFlow",
-      "category": "Deep Learning",
+      "name": "Claude Code",
+      "category": "",
       "level": 4
     },
     {
-      "name": "Vue.js",
-      "category": "Frontend",
-      "level": 4
-    },
-    {
-      "name": "TypeScript",
-      "category": "Programming Language",
-      "level": 4
-    },
-    {
-      "name": "Go",
-      "category": "Programming Language",
-      "level": 3
-    },
-    {
-      "name": "Docker",
-      "category": "DevOps",
-      "level": 4
-    },
-    {
-      "name": "Kubernetes",
-      "category": "DevOps",
+      "name": "VeRL",
+      "category": "",
       "level": 3
     }
   ]

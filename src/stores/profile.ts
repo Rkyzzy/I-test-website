@@ -56,14 +56,14 @@ const DEFAULT_CONFIG: SiteConfig = {
     ]
   },
   techStack: [
-    { name: 'Python', category: 'Programming Language' },
-    { name: 'PyTorch', category: 'Deep Learning' },
-    { name: 'TensorFlow', category: 'Deep Learning' },
-    { name: 'Vue.js', category: 'Frontend' },
-    { name: 'TypeScript', category: 'Programming Language' },
-    { name: 'Go', category: 'Programming Language' },
-    { name: 'Docker', category: 'DevOps' },
-    { name: 'Kubernetes', category: 'DevOps' },
+    { name: 'Python', category: 'Programming Language', level: 4 },
+    { name: 'PyTorch', category: 'Deep Learning', level: 4 },
+    { name: 'TensorFlow', category: 'Deep Learning', level: 4 },
+    { name: 'Vue.js', category: 'Frontend', level: 4 },
+    { name: 'TypeScript', category: 'Programming Language', level: 4 },
+    { name: 'Go', category: 'Programming Language', level: 4 },
+    { name: 'Docker', category: 'DevOps', level: 4 },
+    { name: 'Kubernetes', category: 'DevOps', level: 4 },
   ]
 }
 
@@ -137,7 +137,7 @@ export const useProfileStore = defineStore('profile', () => {
   const skills = computed<Skill[]>(() => {
     return config.value.techStack.map((tech) => ({
       name: tech.name,
-      level: 4,
+      level: tech.level,
       category: 'other' as const
     }))
   })

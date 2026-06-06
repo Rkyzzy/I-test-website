@@ -25,7 +25,7 @@
               :class="{ 'opacity-0 group-hover:opacity-100': !isMobile, 'opacity-80': isMobile }"
             >
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
@@ -168,13 +168,29 @@
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-12">技术栈</h2>
         
-        <div v-if="isAdminPanel" class="mb-8">
-          <n-dynamic-tags v-model:value="editingTechStack" :on-create="() => ({ name: '新技能', category: '' })">
-            <template #="{ index, closable, tag }">
-              <div class="flex items-center gap-2">
-                <n-input v-model:value="tag.name" size="small" style="width: 120px" />
-                <n-input v-model:value="tag.category" size="small" placeholder="分类" style="width: 100px" />
-                <n-button v-if="closable" type="error" @click="removeTechStack(index)" quaternary circle>
+        <!-- 编辑模式 -->
+        <div v-if="isAdminPanel" class="space-y-4 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              v-for="(tech, index) in editingTechStack"
+              :key="index"
+              class="card p-4"
+            >
+              <div class="flex items-center gap-4">
+                <n-input
+                  v-model:value="tech.name"
+                  placeholder="技术名称"
+                  size="small"
+                  class="flex-1"
+                />
+                <n-input-number
+                  v-model:value="tech.level"
+                  :min="1"
+                  :max="5"
+                  size="small"
+                  style="width: 100px"
+                />
+                <n-button type="error" @click="removeTechStack(index)" quaternary circle size="small">
                   <template #icon>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -182,27 +198,51 @@
                   </template>
                 </n-button>
               </div>
-            </template>
-          </n-dynamic-tags>
-          <n-space class="mt-4">
+              <div class="flex items-center gap-1 mt-3">
+                <span class="text-xs text-gray-500 mr-2">掌握程度:</span>
+                <div
+                  v-for="i in 5"
+                  :key="i"
+                  class="w-3 h-3 rounded-full cursor-pointer transition-all"
+                  :class="i <= tech.level ? 'bg-[#58a6ff]' : 'bg-gray-300 dark:bg-gray-600'"
+                  @click="tech.level = i"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <n-button @click="addTechStack" type="primary" ghost>
+              添加技术
+            </n-button>
+          </div>
+          <div class="flex justify-center gap-4 pt-4">
             <n-button type="primary" :loading="saving" @click="saveProfile">
               保存技术栈
             </n-button>
             <n-button @click="resetTechStack">
               重置
             </n-button>
-          </n-space>
+          </div>
         </div>
         
-        <div v-else class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- 展示模式 -->
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div
-            v-for="skill in profile.skills.slice(0, 8)"
-            :key="skill.name"
-            class="card text-center group cursor-pointer"
+            v-for="tech in profile.techStack"
+            :key="tech.name"
+            class="card text-center group cursor-pointer p-6"
           >
-            <span class="text-lg font-medium group-hover:text-[#58a6ff] transition-colors">
-              {{ skill.name }}
+            <span class="text-lg font-medium group-hover:text-[#58a6ff] transition-colors block mb-3">
+              {{ tech.name }}
             </span>
+            <div class="flex justify-center gap-1">
+              <div
+                v-for="i in 5"
+                :key="i"
+                class="w-3 h-3 rounded-full transition-all duration-200"
+                :class="i <= tech.level ? 'bg-[#58a6ff] scale-110' : 'bg-gray-300 dark:bg-gray-600'"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -344,7 +384,7 @@ async function handleAvatarUpload(event: Event) {
   const file = target.files?.[0]
   if (!file) return
 
-  // 检查文件大小 (限制5MB)
+  // 检查文件大小（限制5MB）
   if (file.size > 5 * 1024 * 1024) {
     message.warning('图片大小不能超过 5MB')
     return
@@ -395,6 +435,14 @@ function resetProfile() {
 
 function resetTechStack() {
   editingTechStack.value = [...profile.config.techStack]
+}
+
+function addTechStack() {
+  editingTechStack.value.push({
+    name: '新技术',
+    category: '',
+    level: 3,
+  })
 }
 
 function removeTechStack(index: number) {

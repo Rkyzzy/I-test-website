@@ -23,6 +23,7 @@ export interface SiteConfig {
   techStack: {
     name: string
     category: string
+    level: number // 1-5
   }[]
 }
 

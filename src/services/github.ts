@@ -51,7 +51,7 @@ export class GitHubService {
       if (response.status === 404) {
         return { content: '', sha: '' }
       }
-      throw new Error(`获取文件失败: ${response.statusText}`)
+      throw new Error(`获取文件失败: ${response.status} ${response.statusText}`)
     }
 
     const data = await response.json()
@@ -61,24 +61,44 @@ export class GitHubService {
 
   // 写入文件
   async writeFile(path: string, content: string, message: string, sha?: string): Promise<void> {
-    const body: any = {
-      message,
-      content: btoa(unescape(encodeURIComponent(content))),
-      branch: 'main'
-    }
+    try {
+      // 先尝试获取文件的 SHA（如果存在）
+      if (!sha) {
+        try {
+          const existingFile = await this.getFileContent(path)
+          if (existingFile.sha) {
+            sha = existingFile.sha
+          }
+        } catch (err) {
+          // 文件不存在，可以继续创建
+          console.log('文件不存在，将创建新文件')
+        }
+      }
 
-    if (sha) {
-      body.sha = sha
-    }
+      const body: any = {
+        message,
+        content: btoa(unescape(encodeURIComponent(content))),
+        branch: 'main'
+      }
 
-    const response = await fetch(`${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/contents/${path}`, {
-      method: 'PUT',
-      headers: this.getHeaders(),
-      body: JSON.stringify(body)
-    })
+      if (sha) {
+        body.sha = sha
+      }
 
-    if (!response.ok) {
-      throw new Error(`写入文件失败: ${response.statusText}`)
+      const response = await fetch(`${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify(body)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        const errorMessage = errorData.message || response.statusText
+        throw new Error(`写入文件失败: ${response.status} - ${errorMessage}`)
+      }
+    } catch (error) {
+      console.error('GitHub API 错误:', error)
+      throw error
     }
   }
 

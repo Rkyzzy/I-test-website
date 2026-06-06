@@ -35,35 +35,43 @@
   "techStack": [
     {
       "name": "Python",
-      "category": "Programming Language"
+      "category": "Programming Language",
+      "level": 5
     },
     {
       "name": "PyTorch",
-      "category": "Deep Learning"
+      "category": "Deep Learning",
+      "level": 5
     },
     {
       "name": "TensorFlow",
-      "category": "Deep Learning"
+      "category": "Deep Learning",
+      "level": 4
     },
     {
       "name": "Vue.js",
-      "category": "Frontend"
+      "category": "Frontend",
+      "level": 4
     },
     {
       "name": "TypeScript",
-      "category": "Programming Language"
+      "category": "Programming Language",
+      "level": 4
     },
     {
       "name": "Go",
-      "category": "Programming Language"
+      "category": "Programming Language",
+      "level": 3
     },
     {
       "name": "Docker",
-      "category": "DevOps"
+      "category": "DevOps",
+      "level": 4
     },
     {
       "name": "Kubernetes",
-      "category": "DevOps"
+      "category": "DevOps",
+      "level": 3
     }
   ]
 }

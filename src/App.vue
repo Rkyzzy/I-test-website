@@ -29,7 +29,31 @@
             </div>
 
             <!-- 右侧操作 -->
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+              <!-- 管理员按钮 -->
+              <button
+                v-if="adminStore.isAdmin"
+                @click="showAdminPanel = !showAdminPanel"
+                class="px-3 py-1.5 rounded-full bg-[#58a6ff] text-white text-sm font-medium hover:bg-[#0969da] transition-colors flex items-center gap-1.5"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                编辑模式
+              </button>
+              
+              <button
+                v-else
+                @click="showLoginModal = true"
+                class="w-10 h-10 rounded-full bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center hover:border-[#58a6ff] transition-colors"
+                title="管理员登录"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-6 6H7a6 6 0 00-6 6M3 19a18 18 0 0012 0m-6 0h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </button>
+              
               <!-- 主题切换 -->
               <button
                 @click="themeStore.toggleTheme"
@@ -81,7 +105,7 @@
         <main class="pt-16">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
-              <component :is="Component" />
+              <component :is="Component" :is-admin-panel="showAdminPanel" />
             </transition>
           </router-view>
         </main>
@@ -104,22 +128,30 @@
             </div>
           </div>
         </footer>
+
+        <!-- 登录弹窗 -->
+        <AdminLoginModal v-model:show="showLoginModal" />
       </div>
     </n-message-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, provide } from 'vue'
 import { darkTheme, lightTheme } from 'naive-ui'
 import { useThemeStore } from '@/stores/theme'
 import { useProfileStore } from '@/stores/profile'
+import { useAdminStore } from '@/stores/admin'
+import AdminLoginModal from '@/components/AdminLoginModal.vue'
 
 const themeStore = useThemeStore()
 const profile = useProfileStore()
+const adminStore = useAdminStore()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
+const showLoginModal = ref(false)
+const showAdminPanel = ref(false)
 
 const navLinks = [
   { name: '首页', path: '/' },
@@ -128,6 +160,8 @@ const navLinks = [
   { name: '工作', path: '/work' },
   { name: 'AI 对话', path: '/ai' },
 ]
+
+provide('isAdminPanel', showAdminPanel)
 
 const themeOverrides = computed(() => {
   const isDark = themeStore.isDark
@@ -210,6 +244,8 @@ function handleScroll() {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  adminStore.init()
+  profile.loadConfig()
 })
 
 onUnmounted(() => {

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import type { SiteConfig } from '@/services/github'
 
 interface SocialLink {
   name: string
@@ -34,21 +35,53 @@ interface Education {
   isExchange?: boolean
 }
 
+const DEFAULT_CONFIG: SiteConfig = {
+  profile: {
+    name: '周子越',
+    nameEn: 'Ziyue Zhou',
+    title: '算法工程师',
+    titleEn: 'Algorithm Engineer',
+    bio: '专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。',
+    bioEn: 'Focused on AI and machine learning, passionate about turning cutting-edge research into practical applications.',
+    avatarUrl: 'https://avatars.githubusercontent.com/u/583231?v=4',
+    email: 'contact@example.com',
+    location: 'Shanghai, China',
+    socialLinks: [
+      { name: 'GitHub', icon: 'github', url: 'https://github.com/Rkyzzy' },
+      { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/yourname' },
+      { name: 'Email', icon: 'mail', url: 'mailto:contact@example.com' },
+    ]
+  },
+  techStack: [
+    { name: 'Python', category: 'Programming Language' },
+    { name: 'PyTorch', category: 'Deep Learning' },
+    { name: 'TensorFlow', category: 'Deep Learning' },
+    { name: 'Vue.js', category: 'Frontend' },
+    { name: 'TypeScript', category: 'Programming Language' },
+    { name: 'Go', category: 'Programming Language' },
+    { name: 'Docker', category: 'DevOps' },
+    { name: 'Kubernetes', category: 'DevOps' },
+  ]
+}
+
 export const useProfileStore = defineStore('profile', () => {
-  // 基本信息
-  const name = ref('周子越')
-  const title = ref('Algorithm Engineer · 算法工程师')
-  const bio = ref('专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。')
-  const avatar = ref('/avatar.png')
-
-  // 社交链接
-  const socialLinks = ref<SocialLink[]>([
-    { name: 'GitHub', icon: 'github', url: 'https://github.com/username' },
-    { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/username' },
-    { name: 'Email', icon: 'mail', url: 'mailto:email@example.com' },
-  ])
-
-  // 教育经历
+  // 配置数据
+  const config = ref<SiteConfig>({ ...DEFAULT_CONFIG })
+  const configSha = ref<string>('')
+  const isLoading = ref(false)
+  
+  // 基本信息（计算属性）
+  const name = computed(() => config.value.profile.name)
+  const title = computed(() => `${config.value.profile.titleEn} · ${config.value.profile.title}`)
+  const bio = computed(() => config.value.profile.bio)
+  const avatar = computed(() => config.value.profile.avatarUrl)
+  const socialLinks = computed<SocialLink[]>(() => config.value.profile.socialLinks.map(sl => ({
+    name: sl.name,
+    icon: sl.icon,
+    url: sl.url
+  })))
+  
+  // 教育经历（固定）
   const education = ref<Education[]>([
     {
       school: '南洋理工大学',
@@ -97,17 +130,17 @@ export const useProfileStore = defineStore('profile', () => {
     },
   ])
 
-  // 技能
-  const skills = ref<Skill[]>([
-    { name: 'JavaScript', level: 5, category: 'language' },
-    { name: 'TypeScript', level: 4, category: 'language' },
-    { name: 'Python', level: 4, category: 'language' },
-    { name: 'Vue.js', level: 5, category: 'framework' },
-    { name: 'React', level: 4, category: 'framework' },
-    { name: 'Node.js', level: 4, category: 'framework' },
-    { name: 'Git', level: 5, category: 'tool' },
-    { name: 'Docker', level: 3, category: 'tool' },
-  ])
+  // 技能（从techStack转换）
+  const skills = computed<Skill[]>(() => {
+    return config.value.techStack.map((tech, index) => ({
+      name: tech.name,
+      level: 4,
+      category: 'other' as const
+    }))
+  })
+
+  // 技术栈
+  const techStack = computed(() => config.value.techStack)
 
   // 统计数据
   const stats = ref({
@@ -116,6 +149,27 @@ export const useProfileStore = defineStore('profile', () => {
     technologies: 15,
   })
 
+  // 加载配置
+  async function loadConfig() {
+    isLoading.value = true
+    try {
+      const response = await fetch('/data/site-config.json?t=' + Date.now())
+      if (response.ok) {
+        const data = await response.json()
+        config.value = { ...DEFAULT_CONFIG, ...data }
+      }
+    } catch (err) {
+      console.error('加载配置失败:', err)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // 更新配置
+  function updateConfig(newConfig: Partial<SiteConfig>) {
+    config.value = { ...config.value, ...newConfig }
+  }
+
   // 更新个人信息
   function updateProfile(data: Partial<{
     name: string
@@ -123,13 +177,16 @@ export const useProfileStore = defineStore('profile', () => {
     bio: string
     avatar: string
   }>) {
-    if (data.name) name.value = data.name
-    if (data.title) title.value = data.title
-    if (data.bio) bio.value = data.bio
-    if (data.avatar) avatar.value = data.avatar
+    if (data.name) config.value.profile.name = data.name
+    if (data.title) config.value.profile.title = data.title
+    if (data.bio) config.value.profile.bio = data.bio
+    if (data.avatar) config.value.profile.avatarUrl = data.avatar
   }
 
   return {
+    config,
+    configSha,
+    isLoading,
     name,
     title,
     bio,
@@ -138,7 +195,10 @@ export const useProfileStore = defineStore('profile', () => {
     education,
     experience,
     skills,
+    techStack,
     stats,
+    loadConfig,
+    updateConfig,
     updateProfile,
   }
 })

@@ -1,29 +1,29 @@
 {
   "profile": {
-    "name": "周子越",
+    "name": "周子越2",
     "nameEn": "Ziyue Zhou",
     "title": "算法工程师",
     "titleEn": "Algorithm Engineer",
-    "bio": "专注于人工智能与机器学习领域，热衷于探索技术的无限可能。",
-    "bioEn": "Focused on AI and machine learning, passionate about exploring the infinite possibilities of technology.",
+    "bio": "专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。",
+    "bioEn": "Focused on AI and machine learning, passionate about turning cutting-edge research into practical applications.",
     "avatarUrl": "https://avatars.githubusercontent.com/u/583231?v=4",
     "email": "contact@example.com",
     "location": "Shanghai, China",
     "socialLinks": [
       {
         "name": "GitHub",
-        "url": "https://github.com/Rkyzzy",
-        "icon": "github"
+        "icon": "github",
+        "url": "https://github.com/Rkyzzy"
       },
       {
         "name": "LinkedIn",
-        "url": "https://linkedin.com/in/yourname",
-        "icon": "linkedin"
+        "icon": "linkedin",
+        "url": "https://linkedin.com/in/yourname"
       },
       {
         "name": "Email",
-        "url": "mailto:contact@example.com",
-        "icon": "email"
+        "icon": "mail",
+        "url": "mailto:contact@example.com"
       }
     ]
   },

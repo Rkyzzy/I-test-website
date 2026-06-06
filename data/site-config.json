@@ -21,9 +21,14 @@
         "url": "https://linkedin.com/in/yourname"
       },
       {
-        "name": "Email",
+        "name": "Personal Email",
         "icon": "mail",
-        "url": "mailto:contact@example.com"
+        "url": "982993741@qq.com"
+      },
+      {
+        "name": "Company Email",
+        "url": "982993741@qq.com",
+        "icon": "mail"
       }
     ]
   },

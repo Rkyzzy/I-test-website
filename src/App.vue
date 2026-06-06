@@ -129,23 +129,80 @@ const navLinks = [
   { name: 'AI 对话', path: '/ai' },
 ]
 
-const themeOverrides = computed(() => ({
-  common: {
-    primaryColor: '#58a6ff',
-    primaryColorHover: '#79b8ff',
-    primaryColorPressed: '#388bfd',
-    borderRadius: '8px',
-  },
-  Button: {
-    borderRadiusMedium: '8px',
-  },
-  Card: {
-    borderRadius: '12px',
-  },
-  Input: {
-    borderRadius: '8px',
-  },
-}))
+const themeOverrides = computed(() => {
+  const isDark = themeStore.isDark
+  
+  return {
+    common: {
+      primaryColor: '#58a6ff',
+      primaryColorHover: '#79b8ff',
+      primaryColorPressed: '#388bfd',
+      borderRadius: '8px',
+      // 基础颜色
+      textColorBase: isDark ? '#e6edf3' : '#1f2328',
+      textColor1: isDark ? '#e6edf3' : '#1f2328',
+      textColor2: isDark ? '#8b949e' : '#656d76',
+      textColor3: isDark ? '#6e7781' : '#8b949e',
+      textColorDisabled: isDark ? '#484f58' : '#d0d7de',
+      placeholderColor: isDark ? '#6e7781' : '#8b949e',
+      // 背景颜色
+      bodyColor: isDark ? '#0d1117' : '#ffffff',
+      cardColor: isDark ? '#161b22' : '#ffffff',
+      modalColor: isDark ? '#161b22' : '#ffffff',
+      popoverColor: isDark ? '#161b22' : '#ffffff',
+      tableColor: isDark ? '#0d1117' : '#ffffff',
+      inputColor: isDark ? '#0d1117' : '#ffffff',
+      inputColorDisabled: isDark ? '#21262d' : '#f6f8fa',
+      // 边框颜色
+      borderColor: isDark ? '#30363d' : '#d0d7de',
+      dividerColor: isDark ? '#30363d' : '#d0d7de',
+      // 高亮颜色
+      successColor: '#3fb950',
+      warningColor: '#d29922',
+      errorColor: '#f85149',
+      infoColor: '#58a6ff',
+    },
+    Button: {
+      borderRadiusMedium: '8px',
+      colorPrimary: '#58a6ff',
+      colorHoverPrimary: '#79b8ff',
+      colorPressedPrimary: '#388bfd',
+      textColorPrimary: '#ffffff',
+      textColorHoverPrimary: '#ffffff',
+      textColorPressedPrimary: '#ffffff',
+      // 浅色按钮
+      color: isDark ? '#21262d' : '#f6f8fa',
+      colorHover: isDark ? '#30363d' : '#eaeef2',
+      colorPressed: isDark ? '#484f58' : '#d0d7de',
+      textColor: isDark ? '#e6edf3' : '#1f2328',
+      textColorHover: isDark ? '#e6edf3' : '#1f2328',
+      textColorPressed: isDark ? '#e6edf3' : '#1f2328',
+      borderColor: isDark ? '#30363d' : '#d0d7de',
+      borderHover: isDark ? '#58a6ff' : '#58a6ff',
+      borderPressed: isDark ? '#388bfd' : '#388bfd',
+    },
+    Card: {
+      borderRadius: '12px',
+      color: isDark ? '#161b22' : '#ffffff',
+      colorEmbedded: isDark ? '#0d1117' : '#f6f8fa',
+      borderColor: isDark ? '#30363d' : '#d0d7de',
+      textColor: isDark ? '#e6edf3' : '#1f2328',
+      titleTextColor: isDark ? '#e6edf3' : '#1f2328',
+      subtitleTextColor: isDark ? '#8b949e' : '#656d76',
+      actionColor: isDark ? '#21262d' : '#f6f8fa',
+    },
+    Input: {
+      borderRadius: '8px',
+      color: isDark ? '#0d1117' : '#ffffff',
+      colorFocus: isDark ? '#0d1117' : '#ffffff',
+      borderColor: isDark ? '#30363d' : '#d0d7de',
+      borderHover: isDark ? '#58a6ff' : '#58a6ff',
+      borderFocus: isDark ? '#58a6ff' : '#58a6ff',
+      textColor: isDark ? '#e6edf3' : '#1f2328',
+      placeholderColor: isDark ? '#6e7781' : '#8b949e',
+    },
+  }
+})
 
 function handleScroll() {
   isScrolled.value = window.scrollY > 20

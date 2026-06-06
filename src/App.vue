@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider :theme="themeStore.isDark ? darkTheme : undefined" :theme-overrides="themeOverrides">
+  <n-config-provider :theme="themeStore.isDark ? darkTheme : lightTheme" :theme-overrides="themeOverrides">
     <n-message-provider>
       <div class="min-h-screen" :class="{ dark: themeStore.isDark }">
         <!-- 顶部导航 -->
@@ -110,8 +110,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { darkTheme } from 'naive-ui'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { darkTheme, lightTheme } from 'naive-ui'
 import { useThemeStore } from '@/stores/theme'
 import { useProfileStore } from '@/stores/profile'
 
@@ -129,11 +129,12 @@ const navLinks = [
   { name: 'AI 对话', path: '/ai' },
 ]
 
-const themeOverrides = {
+const themeOverrides = computed(() => ({
   common: {
     primaryColor: '#58a6ff',
     primaryColorHover: '#79b8ff',
     primaryColorPressed: '#388bfd',
+    borderRadius: '8px',
   },
   Button: {
     borderRadiusMedium: '8px',
@@ -144,7 +145,7 @@ const themeOverrides = {
   Input: {
     borderRadius: '8px',
   },
-}
+}))
 
 function handleScroll() {
   isScrolled.value = window.scrollY > 20

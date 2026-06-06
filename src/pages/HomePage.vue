@@ -120,13 +120,18 @@
 
     <!-- 快速导航 Section -->
     <section class="py-20 px-6">
-      <div class="max-w-4xl mx-auto">
+      <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-12">探索更多</h2>
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-4 gap-6">
           <router-link to="/blog" class="card group">
             <div class="text-4xl mb-4">📝</div>
             <h3 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">博客</h3>
             <p class="text-[#656d76] dark:text-[#8b949e]">分享我的想法与技术文章</p>
+          </router-link>
+          <router-link to="/education" class="card group">
+            <div class="text-4xl mb-4">🎓</div>
+            <h3 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">教育</h3>
+            <p class="text-[#656d76] dark:text-[#8b949e]">本科、交换与研究生求学经历</p>
           </router-link>
           <router-link to="/work" class="card group">
             <div class="text-4xl mb-4">💼</div>

@@ -4,8 +4,8 @@
     "nameEn": "Ziyue Zhou",
     "title": "算法工程师",
     "titleEn": "Algorithm Engineer",
-    "bio": "专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。",
-    "bioEn": "Focused on AI and machine learning, passionate about turning cutting-edge research into practical applications.",
+    "bio": "专注于具身智能与Agentic AI，研究方向包括VLA，Agentic Modeling，World Model等。Vibe Coding爱好者",
+    "bioEn": "Focused on Embodied Intelligence and Agentic AI, passionate about Vision Language Model, Agentic Modeling and World Model. Vibe coding enthusiast",
     "avatarUrl": "https://avatars.githubusercontent.com/u/583231?v=4",
     "email": "contact@example.com",
     "location": "Shanghai, China",
@@ -27,7 +27,7 @@
       },
       {
         "name": "Company Email",
-        "url": "982993741@qq.com",
+        "url": "zhouziyue@lixiang.com",
         "icon": "mail"
       }
     ]

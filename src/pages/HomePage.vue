@@ -13,12 +13,17 @@
         <!-- 头像 -->
         <div class="mb-8 animate-fade-in relative inline-block">
           <div 
-            class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-[#30363d] relative group"
-            :class="{ 'cursor-pointer': isAdminPanel }"
-            @click="isAdminPanel && triggerAvatarUpload"
+            class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-[#30363d] relative group cursor-pointer"
+            :class="{ 'ring-4 ring-blue-500 ring-offset-2': isAdminPanel }"
+            @click="isAdminPanel && triggerAvatarUpload()"
           >
             <img :src="profile.avatar" :alt="profile.name" class="w-full h-full object-cover" />
-            <div v-if="isAdminPanel" class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <!-- 编辑图标覆盖层 -->
+            <div 
+              v-if="isAdminPanel" 
+              class="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity"
+              :class="{ 'opacity-0 group-hover:opacity-100': !isMobile, 'opacity-80': isMobile }"
+            >
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -32,6 +37,9 @@
             class="hidden" 
             @change="handleAvatarUpload" 
           />
+          <p v-if="isAdminPanel" class="mt-2 text-sm text-gray-500">
+            点击头像上传新图片
+          </p>
         </div>
 
         <!-- 姓名和头衔 -->
@@ -258,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, inject, watch } from 'vue'
+import { h, ref, inject, watch, onMounted } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 import { useAdminStore } from '@/stores/admin'
 import { GitHubService } from '@/services/github'
@@ -272,6 +280,7 @@ const message = useMessage()
 const isAdminPanel = inject('isAdminPanel', ref(false))
 const avatarInput = ref<HTMLInputElement | null>(null)
 const saving = ref(false)
+const isMobile = ref(false)
 
 const editingProfile = ref<SiteConfig['profile']>({ ...profile.config.profile })
 const editingTechStack = ref([...profile.config.techStack])
@@ -287,6 +296,15 @@ watch(() => profile.config, (newConfig) => {
   editingProfile.value = { ...newConfig.profile }
   editingTechStack.value = [...newConfig.techStack]
 }, { deep: true })
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+function checkMobile() {
+  isMobile.value = window.innerWidth < 768
+}
 
 // 社交图标组件
 const icons: Record<string, any> = {
@@ -309,7 +327,16 @@ function getSocialIcon(name: string) {
 }
 
 function triggerAvatarUpload() {
-  avatarInput.value?.click()
+  if (avatarInput.value) {
+    avatarInput.value.click()
+  } else {
+    // 备用方案：创建临时input
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = (e) => handleAvatarUpload(e)
+    input.click()
+  }
 }
 
 async function handleAvatarUpload(event: Event) {
@@ -317,11 +344,20 @@ async function handleAvatarUpload(event: Event) {
   const file = target.files?.[0]
   if (!file) return
 
+  // 检查文件大小 (限制5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    message.warning('图片大小不能超过 5MB')
+    return
+  }
+
   const reader = new FileReader()
   reader.onload = async (e) => {
     const base64 = e.target?.result as string
     editingProfile.value.avatarUrl = base64
-    await saveProfile()
+    message.success('头像已更新，点击"保存更改"来保存')
+  }
+  reader.onerror = () => {
+    message.error('读取图片失败')
   }
   reader.readAsDataURL(file)
 }

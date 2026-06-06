@@ -132,7 +132,7 @@ export const useProfileStore = defineStore('profile', () => {
 
   // 技能（从techStack转换）
   const skills = computed<Skill[]>(() => {
-    return config.value.techStack.map((tech, index) => ({
+    return config.value.techStack.map((tech) => ({
       name: tech.name,
       level: 4,
       category: 'other' as const

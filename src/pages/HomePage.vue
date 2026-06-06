@@ -49,7 +49,7 @@
           </h1>
         </div>
         <h2 class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-4 animate-slide-up delay-50">
-          {{ profile.config.nameEn }}
+          {{ profile.config.profile.nameEn }}
         </h2>
         <div class="animate-slide-up delay-100 mb-6">
           <div v-if="isAdminPanel" class="mb-2">
@@ -101,7 +101,7 @@
               v-model:value="editingProfile.socialLinks"
               :on-create="() => ({ name: '', url: '', icon: 'github' })"
             >
-              <template #="{ value, index, remove }">
+              <template #="{ value, remove }">
                 <n-space>
                   <n-input v-model:value="value.name" placeholder="名称" style="width: 100px" />
                   <n-select
@@ -162,7 +162,7 @@
         
         <div v-if="isAdminPanel" class="mb-8">
           <n-dynamic-tags v-model:value="editingTechStack" :on-create="() => ({ name: '新技能', category: '' })">
-            <template #="{ index, closable, tag, disabled }">
+            <template #="{ index, closable, tag }">
               <div class="flex items-center gap-2">
                 <n-input v-model:value="tag.name" size="small" style="width: 120px" />
                 <n-input v-model:value="tag.category" size="small" placeholder="分类" style="width: 100px" />
@@ -258,19 +258,16 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, inject, watch, onMounted } from 'vue'
+import { h, ref, inject, watch } from 'vue'
 import { useProfileStore } from '@/stores/profile'
-import { useThemeStore } from '@/stores/theme'
 import { useAdminStore } from '@/stores/admin'
 import { GitHubService } from '@/services/github'
 import { useMessage } from 'naive-ui'
 import type { SiteConfig } from '@/services/github'
 
 const profile = useProfileStore()
-const themeStore = useThemeStore()
 const adminStore = useAdminStore()
 const message = useMessage()
-const isDark = themeStore.isDark
 
 const isAdminPanel = inject('isAdminPanel', ref(false))
 const avatarInput = ref<HTMLInputElement | null>(null)

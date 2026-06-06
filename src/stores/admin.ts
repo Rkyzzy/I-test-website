@@ -17,11 +17,6 @@ export const useAdminStore = defineStore('admin', () => {
 
   const isAuthenticated = computed(() => !!token.value && !!user.value)
 
-  // 获取GitHub登录URL (使用Device Flow)
-  function getGitHubLoginUrl() {
-    return `https://github.com/login/device/code?client_id=Iv23li5HjJ46t1XyQn1z`
-  }
-
   // 设置token
   function setToken(newToken: string) {
     token.value = newToken

@@ -35,6 +35,9 @@ interface Education {
   isExchange?: boolean
 }
 
+// 获取base路径
+const BASE_PATH = '/I-test-website/'
+
 const DEFAULT_CONFIG: SiteConfig = {
   profile: {
     name: '周子越',
@@ -153,10 +156,14 @@ export const useProfileStore = defineStore('profile', () => {
   async function loadConfig() {
     isLoading.value = true
     try {
-      const response = await fetch('/data/site-config.json?t=' + Date.now())
+      const configUrl = `${BASE_PATH}data/site-config.json?t=${Date.now()}`
+      const response = await fetch(configUrl)
       if (response.ok) {
         const data = await response.json()
         config.value = { ...DEFAULT_CONFIG, ...data }
+        console.log('配置加载成功:', config.value.profile.name)
+      } else {
+        console.error('配置加载失败:', response.status, response.statusText)
       }
     } catch (err) {
       console.error('加载配置失败:', err)

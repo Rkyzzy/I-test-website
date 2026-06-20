@@ -124,8 +124,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import {
   categories,
   getAllTags,
@@ -134,6 +134,7 @@ import {
 } from '@/content/blog/posts'
 
 const router = useRouter()
+const route = useRoute()
 
 const searchQuery = ref('')
 const selectedTag = ref<string | null>(null)
@@ -142,6 +143,13 @@ const currentPage = ref(1)
 const perPage = 6
 
 const allTags = getAllTags()
+
+onMounted(() => {
+  const tagFromQuery = route.query.tag as string | undefined
+  if (tagFromQuery) {
+    selectedTag.value = tagFromQuery
+  }
+})
 
 const categoryOptions = categories.map(c => ({ label: c, value: c }))
 

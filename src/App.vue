@@ -160,6 +160,7 @@ const navLinks = [
   { name: '博客', path: '/blog' },
   { name: '教育', path: '/education' },
   { name: '工作', path: '/work' },
+  { name: '标签', path: '/tags' },
   { name: 'AI 对话', path: '/ai' },
 ]
 

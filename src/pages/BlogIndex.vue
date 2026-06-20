@@ -1,14 +1,12 @@
 <template>
   <div class="min-h-screen py-20 px-6">
     <div class="max-w-4xl mx-auto">
-      <!-- 页面标题 -->
       <h1 class="text-4xl font-bold mb-4">博客</h1>
       <p class="text-[#656d76] dark:text-[#8b949e] mb-12">
         记录思考，分享技术，持续成长
       </p>
 
-      <!-- 搜索和筛选 -->
-      <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex flex-col md:flex-row gap-4 mb-8 items-start md:items-center">
         <n-input
           v-model:value="searchQuery"
           placeholder="搜索文章..."
@@ -22,9 +20,16 @@
           </template>
         </n-input>
 
+        <n-select
+          v-model:value="selectedCategory"
+          :options="categoryOptions"
+          class="min-w-[120px]"
+          placeholder="分类"
+        />
+
         <div class="flex gap-2 flex-wrap">
           <button
-            v-for="tag in tags"
+            v-for="tag in allTags"
             :key="tag"
             @click="selectedTag = selectedTag === tag ? null : tag"
             :class="[
@@ -37,25 +42,22 @@
         </div>
       </div>
 
-      <!-- 文章列表 -->
       <div class="space-y-6">
         <article
-          v-for="post in filteredPosts"
+          v-for="post in currentPosts"
           :key="post.slug"
           class="card cursor-pointer group"
           @click="navigateToPost(post.slug)"
         >
           <div class="flex gap-6">
-            <!-- 缩略图 -->
             <div class="hidden md:block w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
               <img
                 :src="post.cover"
                 :alt="post.title"
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                loading="lazy"
               />
             </div>
-
-            <!-- 内容 -->
             <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
                 <span class="text-sm text-[#656d76] dark:text-[#8b949e]">
@@ -65,6 +67,7 @@
                 <span class="text-sm text-[#656d76] dark:text-[#8b949e]">
                   {{ post.readTime }} 分钟阅读
                 </span>
+                <span class="text-xs tag !px-2 !py-0.5 !text-xs">{{ post.category }}</span>
               </div>
 
               <h2 class="text-xl font-semibold mb-2 group-hover:text-[#58a6ff] transition-colors">
@@ -85,7 +88,33 @@
         </article>
       </div>
 
-      <!-- 空状态 -->
+      <!-- 分页 -->
+      <div v-if="totalPages > 1" class="flex justify-center items-center gap-4 mt-12">
+        <button
+          :disabled="currentPage <= 1"
+          @click="currentPage = currentPage - 1"
+          class="btn btn-ghost disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+
+        <span class="text-sm text-[#656d76] dark:text-[#8b949e]">
+          第 {{ currentPage }} / {{ totalPages }} 页
+        </span>
+
+        <button
+          :disabled="currentPage >= totalPages"
+          @click="currentPage = currentPage + 1"
+          class="btn btn-ghost disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+
       <div v-if="filteredPosts.length === 0" class="text-center py-20">
         <div class="text-6xl mb-4">📭</div>
         <p class="text-[#656d76] dark:text-[#8b949e]">暂无文章</p>
@@ -97,55 +126,50 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import {
+  categories,
+  getAllTags,
+  getPostsByCategory,
+  paginatePosts,
+} from '@/content/blog/posts'
 
 const router = useRouter()
 
 const searchQuery = ref('')
 const selectedTag = ref<string | null>(null)
+const selectedCategory = ref<string>('全部')
+const currentPage = ref(1)
+const perPage = 6
 
-const tags = ['技术', '思考', '生活', '前端', '后端']
+const allTags = getAllTags()
 
-// 示例文章数据
-const posts = ref([
-  {
-    slug: 'getting-started-with-vue3',
-    title: 'Vue 3 入门指南',
-    excerpt: 'Vue 3 是 Vue.js 的最新主要版本，带来了许多新特性和改进。本文将带你快速上手 Vue 3 的核心概念。',
-    cover: 'https://picsum.photos/400/300?random=1',
-    date: '2024-01-15',
-    readTime: 8,
-    tags: ['技术', '前端', 'Vue'],
-  },
-  {
-    slug: 'design-patterns-in-frontend',
-    title: '前端设计模式实践',
-    excerpt: '设计模式是软件开发中的重要知识。本文探讨了如何在前端开发中应用常见的设计模式。',
-    cover: 'https://picsum.photos/400/300?random=2',
-    date: '2024-01-10',
-    readTime: 12,
-    tags: ['技术', '前端'],
-  },
-  {
-    slug: 'my-learning-philosophy',
-    title: '我的学习方法论',
-    excerpt: '高效学习是每个工程师必备的技能。这篇文章分享了我多年来总结的学习方法和思考。',
-    cover: 'https://picsum.photos/400/300?random=3',
-    date: '2024-01-05',
-    readTime: 6,
-    tags: ['思考', '生活'],
-  },
-])
+const categoryOptions = categories.map(c => ({ label: c, value: c }))
 
 const filteredPosts = computed(() => {
-  return posts.value.filter(post => {
-    const matchesSearch = !searchQuery.value ||
-      post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    const matchesTag = !selectedTag.value || post.tags.includes(selectedTag.value)
-    
-    return matchesSearch && matchesTag
-  })
+  let posts = getPostsByCategory(selectedCategory.value)
+
+  if (selectedTag.value) {
+    posts = posts.filter(p => p.tags.includes(selectedTag.value!))
+  }
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    posts = posts.filter(
+      p =>
+        p.title.toLowerCase().includes(q) ||
+        p.excerpt.toLowerCase().includes(q) ||
+        p.tags.some(t => t.toLowerCase().includes(q))
+    )
+  }
+
+  return posts
+})
+
+const totalPages = computed(() => Math.ceil(filteredPosts.value.length / perPage))
+
+const currentPosts = computed(() => {
+  const result = paginatePosts(filteredPosts.value, currentPage.value, perPage)
+  return result.posts
 })
 
 function navigateToPost(slug: string) {

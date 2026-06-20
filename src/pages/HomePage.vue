@@ -2,23 +2,22 @@
   <div class="min-h-screen">
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <!-- 动态背景 -->
-      <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-[rgba(88,166,255,0.1)] via-transparent to-[rgba(63,185,80,0.1)]"></div>
-        <div class="particles absolute inset-0"></div>
-      </div>
+      <!-- Canvas 粒子背景 -->
+      <canvas ref="particleCanvas" class="absolute inset-0 w-full h-full"></canvas>
+      
+      <!-- 渐变背景叠加 -->
+      <div class="absolute inset-0 bg-gradient-to-br from-[rgba(88,166,255,0.08)] via-transparent to-[rgba(63,185,80,0.08)]"></div>
 
       <!-- 内容 -->
       <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <!-- 头像 -->
-        <div class="mb-8 animate-fade-in relative inline-block">
+        <div ref="staggerEls" class="stagger-item stagger-0 mb-8 relative inline-block">
           <div 
-            class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-[#30363d] relative group cursor-pointer"
+            class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-[#30363d] relative group cursor-pointer float-animation"
             :class="{ 'ring-4 ring-blue-500 ring-offset-2': isAdminPanel }"
             @click="isAdminPanel && triggerAvatarUpload()"
           >
             <img :src="profile.avatar" :alt="profile.name" class="w-full h-full object-cover" />
-            <!-- 编辑图标覆盖层 -->
             <div 
               v-if="isAdminPanel" 
               class="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity"
@@ -42,8 +41,8 @@
           </p>
         </div>
 
-        <!-- 姓名和头衔 -->
-        <div class="animate-slide-up">
+        <!-- 姓名 -->
+        <div ref="staggerEls" class="stagger-item stagger-1">
           <div v-if="isAdminPanel" class="mb-2">
             <n-input
               v-model:value="editingProfile.name"
@@ -56,32 +55,36 @@
             {{ profile.name }}
           </h1>
         </div>
-        <h2 class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-4 animate-slide-up delay-50">
-          {{ profile.config.profile.nameEn }}
-        </h2>
-        <div class="animate-slide-up delay-100 mb-6">
-          <div v-if="isAdminPanel" class="mb-2">
-            <n-input
-              v-model:value="editingProfile.title"
-              size="large"
-              text
-              class="text-2xl md:text-3xl"
-            />
-            <n-input
-              v-model:value="editingProfile.titleEn"
-              size="large"
-              text
-              class="text-2xl md:text-3xl mt-2"
-              placeholder="英文标题"
-            />
+
+        <!-- 头衔 -->
+        <div ref="staggerEls" class="stagger-item stagger-2">
+          <h2 class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e] mb-4">
+            {{ profile.config.profile.nameEn }}
+          </h2>
+          <div class="mb-6">
+            <div v-if="isAdminPanel" class="mb-2">
+              <n-input
+                v-model:value="editingProfile.title"
+                size="large"
+                text
+                class="text-2xl md:text-3xl"
+              />
+              <n-input
+                v-model:value="editingProfile.titleEn"
+                size="large"
+                text
+                class="text-2xl md:text-3xl mt-2"
+                placeholder="英文标题"
+              />
+            </div>
+            <p v-else class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e]">
+              {{ profile.title }}
+            </p>
           </div>
-          <p v-else class="text-2xl md:text-3xl text-[#656d76] dark:text-[#8b949e]">
-            {{ profile.title }}
-          </p>
         </div>
 
         <!-- 简介 -->
-        <div class="mb-8 animate-slide-up delay-200">
+        <div ref="staggerEls" class="stagger-item stagger-3 mb-8">
           <div v-if="isAdminPanel">
             <n-input
               v-model:value="editingProfile.bio"
@@ -103,7 +106,7 @@
         </div>
 
         <!-- 社交链接 -->
-        <div class="flex justify-center gap-4 mb-12 animate-slide-up delay-300">
+        <div ref="staggerEls" class="stagger-item stagger-4 flex justify-center gap-4 mb-12">
           <div v-if="isAdminPanel" class="w-full max-w-md">
             <n-dynamic-input
               v-model:value="editingProfile.socialLinks"
@@ -139,7 +142,7 @@
               rel="noopener noreferrer"
               class="w-12 h-12 rounded-full bg-[#f6f8fa] dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] flex items-center justify-center hover:border-[#58a6ff] hover:text-[#58a6ff] transition-all duration-200 hover:-translate-y-1"
             >
-              <component :is="getSocialIcon(link.icon)" class="w-5 h-5" />
+              <SocialIcon :name="link.icon" />
             </a>
           </template>
         </div>
@@ -168,7 +171,6 @@
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-12">技术栈</h2>
         
-        <!-- 编辑模式 -->
         <div v-if="isAdminPanel" class="space-y-4 mb-8">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div
@@ -225,7 +227,6 @@
           </div>
         </div>
         
-        <!-- 展示模式 -->
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div
             v-for="tech in profile.techStack"
@@ -306,12 +307,13 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, inject, watch, onMounted } from 'vue'
+import { h, ref, inject, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 import { useAdminStore } from '@/stores/admin'
 import { GitHubService } from '@/services/github'
 import { useMessage } from 'naive-ui'
 import type { SiteConfig } from '@/services/github'
+import SocialIcon from '@/components/SocialIcon.vue'
 
 const profile = useProfileStore()
 const adminStore = useAdminStore()
@@ -321,6 +323,7 @@ const isAdminPanel = inject('isAdminPanel', ref(false))
 const avatarInput = ref<HTMLInputElement | null>(null)
 const saving = ref(false)
 const isMobile = ref(false)
+const particleCanvas = ref<HTMLCanvasElement | null>(null)
 
 const editingProfile = ref<SiteConfig['profile']>({ ...profile.config.profile })
 const editingTechStack = ref([...profile.config.techStack])
@@ -340,37 +343,116 @@ watch(() => profile.config, (newConfig) => {
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  initParticles()
+  runStagger()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+  stopParticles()
 })
 
 function checkMobile() {
   isMobile.value = window.innerWidth < 768
 }
 
-// 社交图标组件
-const icons: Record<string, any> = {
-  github: () => h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
-    h('path', { d: 'M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z' })
-  ]),
-  linkedin: () => h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
-    h('path', { d: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' })
-  ]),
-  mail: () => h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
-    h('path', { d: 'M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z' })
-  ]),
-  twitter: () => h('svg', { viewBox: '0 0 24 24', fill: 'currentColor' }, [
-    h('path', { d: 'M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z' })
-  ]),
+// ===================== 粒子系统 =====================
+let particleAnimationId = 0
+
+interface Particle {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  size: number
+  alpha: number
+  alphaDir: number
 }
 
-function getSocialIcon(name: string) {
-  return icons[name] || icons.github
+function initParticles() {
+  const canvas = particleCanvas.value
+  if (!canvas) return
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  let w = canvas.width = canvas.offsetWidth
+  let h = canvas.height = canvas.offsetHeight
+
+  const particles: Particle[] = []
+  const count = Math.min(80, Math.floor(w * h / 15000))
+
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.5 + 0.2,
+      alphaDir: Math.random() > 0.5 ? 1 : -1,
+    })
+  }
+
+  function resize() {
+    const newW = canvas!.offsetWidth
+    const newH = canvas!.offsetHeight
+    if (newW !== w || newH !== h) {
+      w = canvas!.width = newW
+      h = canvas!.height = newH
+    }
+  }
+
+  function animate() {
+    resize()
+    ctx!.clearRect(0, 0, w, h)
+
+    for (const p of particles) {
+      p.x += p.vx
+      p.y += p.vy
+      p.alpha += 0.003 * p.alphaDir
+      if (p.alpha > 0.7) p.alphaDir = -1
+      if (p.alpha < 0.15) p.alphaDir = 1
+
+      if (p.x < 0) p.x = w
+      if (p.x > w) p.x = 0
+      if (p.y < 0) p.y = h
+      if (p.y > h) p.y = 0
+
+      ctx!.beginPath()
+      ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      ctx!.fillStyle = `rgba(88, 166, 255, ${p.alpha})`
+      ctx!.fill()
+    }
+
+    particleAnimationId = requestAnimationFrame(animate)
+  }
+
+  animate()
 }
 
+function stopParticles() {
+  if (particleAnimationId) {
+    cancelAnimationFrame(particleAnimationId)
+    particleAnimationId = 0
+  }
+}
+
+// ===================== Stagger 动画 =====================
+function runStagger() {
+  nextTick(() => {
+    const items = document.querySelectorAll('.stagger-item')
+    items.forEach((el) => {
+      el.classList.add('stagger-visible')
+    })
+  })
+}
+
+// ===================== 头像上传 =====================
 function triggerAvatarUpload() {
   if (avatarInput.value) {
     avatarInput.value.click()
   } else {
-    // 备用方案：创建临时input
     const input = document.createElement('input')
     input.type = 'file'
     input.accept = 'image/*'
@@ -384,7 +466,6 @@ async function handleAvatarUpload(event: Event) {
   const file = target.files?.[0]
   if (!file) return
 
-  // 检查文件大小（限制5MB）
   if (file.size > 5 * 1024 * 1024) {
     message.warning('图片大小不能超过 5MB')
     return
@@ -451,8 +532,30 @@ function removeTechStack(index: number) {
 </script>
 
 <style scoped>
-.particles {
-  background-image: radial-gradient(circle at 1px 1px, rgba(88, 166, 255, 0.15) 1px, transparent 0);
-  background-size: 40px 40px;
+.float-animation {
+  animation: float 3s ease-in-out infinite;
 }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Stagger 动画 */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.stagger-item.stagger-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-0 { transition-delay: 0ms; }
+.stagger-1 { transition-delay: 120ms; }
+.stagger-2 { transition-delay: 240ms; }
+.stagger-3 { transition-delay: 360ms; }
+.stagger-4 { transition-delay: 480ms; }
 </style>

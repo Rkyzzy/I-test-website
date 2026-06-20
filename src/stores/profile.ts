@@ -44,11 +44,11 @@ const DEFAULT_CONFIG: SiteConfig = {
     nameEn: 'Ziyue Zhou',
     title: '算法工程师',
     titleEn: 'Algorithm Engineer',
-    bio: '专注于人工智能与机器学习领域，致力于将前沿研究成果转化为实际应用。',
-    bioEn: 'Focused on AI and machine learning, passionate about turning cutting-edge research into practical applications.',
+    bio: '专注于自动驾驶中的视觉-语言-行动模型、智能体建模与世界模型研究，致力于将前沿AI技术落地到百万辆级的量产产品中。',
+    bioEn: 'Focused on VLA, VLN, agentic modeling, and world models for autonomous driving. Passionate about shipping cutting-edge AI to millions of production vehicles.',
     avatarUrl: 'https://avatars.githubusercontent.com/u/583231?v=4',
-    email: 'contact@example.com',
-    location: 'Shanghai, China',
+    email: '982993741@qq.com',
+    location: 'Shenzhen, China',
     socialLinks: [
       { name: 'GitHub', icon: 'github', url: 'https://github.com/Rkyzzy' },
       { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/yourname' },
@@ -122,13 +122,31 @@ export const useProfileStore = defineStore('profile', () => {
   // 工作经历
   const experience = ref<Experience[]>([
     {
-      title: 'Software Engineer',
-      company: 'Company Name',
-      period: '2024 - Present',
-      description: 'Building awesome products.',
+      title: '算法工程师',
+      company: '理想汽车 (Li Auto)',
+      period: '2024 - 至今',
+      description: '从事自动驾驶前沿研究，主要方向为 VLA、VLN、Agentic Modeling、World Model',
       highlights: [
-        'Developed feature X',
-        'Improved performance by 50%',
+        '工作成果跑在百万车主的车上，合入 OTA 主线',
+        '在发布会上被介绍',
+      ],
+    },
+    {
+      title: '算法工程师',
+      company: '小马智行 (Pony.ai)',
+      period: '此前',
+      description: 'Robotaxi 数据闭环体系中的大模型感知算法',
+      highlights: [
+        '负责大模型感知算法研发',
+      ],
+    },
+    {
+      title: '算法工程师',
+      company: '德赛西威新加坡 (Desay SV)',
+      period: '此前',
+      description: '车端 MapTR 类在线建图算法',
+      highlights: [
+        '负责车端在线建图算法研发',
       ],
     },
   ])

@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/WorkPage.vue'),
   },
   {
+    path: '/tags',
+    name: 'Tags',
+    component: () => import('@/pages/TagsPage.vue'),
+  },
+  {
     path: '/ai',
     name: 'AIChat',
     component: () => import('@/pages/AIChatPage.vue'),

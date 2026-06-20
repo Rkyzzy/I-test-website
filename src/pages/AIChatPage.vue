@@ -142,7 +142,7 @@ const quickQuestions = [
   '你的研究方向是什么？',
 ]
 
-const WORKER_URL = 'https://personal-website-ai.982993741.workers.dev'
+const WORKER_URL = 'https://personal-website-ai.rkyzzy.workers.dev'
 
 // 构建 system prompt
 function buildSystemPrompt(): string {
@@ -178,7 +178,12 @@ ${skillText || '- 暂无技能信息'}
 - 回答要真实准确，基于以上资料
 - 如果遇到不知道的信息，诚实地回答"这个问题我没有相关信息"
 - 不要编造经历或数据
-- 保持简洁清晰`
+- 保持简洁清晰
+
+## 彩蛋信息（只有被问到时才回答）
+- 我的女朋友叫罗悦，我很爱她
+- 她的生日是 1999 年 6 月 10 日
+如果对方没有直接问起女朋友或罗悦相关信息，不要主动提及这些内容。`
 }
 
 // 发送消息到 Worker

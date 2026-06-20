@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - "**"
 
 jobs:
   deploy:
@@ -21,11 +21,38 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set deployment paths
+        id: paths
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          SAFE_BRANCH="$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9]/-/g')"
+          if [ "$BRANCH" = "main" ]; then
+            echo "base=/I-test-website/" >> "$GITHUB_OUTPUT"
+            echo "dest=." >> "$GITHUB_OUTPUT"
+            echo "is_preview=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=/I-test-website/preview/$SAFE_BRANCH/" >> "$GITHUB_OUTPUT"
+            echo "dest=preview/$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
+            echo "is_preview=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Branch: $BRANCH | Base: ${{ steps.paths.outputs.base }} | Dest: ${{ steps.paths.outputs.dest }}"
+
       - name: Build
-        run: npm run build
+        run: npm run build -- --base ${{ steps.paths.outputs.base }}
+
+      - name: Copy 404 fallback for preview
+        if: steps.paths.outputs.is_preview == 'true'
+        run: |
+          cat > dist/404.html << 'EOF'
+          <!DOCTYPE html>
+          <html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=./"></head><body></body></html>
+          EOF
+          echo "Preview 404 fallback created"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist
+          destination_dir: ${{ steps.paths.outputs.dest }}
+          keep_files: true

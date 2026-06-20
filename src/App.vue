@@ -142,11 +142,13 @@ import { darkTheme, lightTheme } from 'naive-ui'
 import { useThemeStore } from '@/stores/theme'
 import { useProfileStore } from '@/stores/profile'
 import { useAdminStore } from '@/stores/admin'
+import { useRouter } from 'vue-router'
 import AdminLoginModal from '@/components/AdminLoginModal.vue'
 
 const themeStore = useThemeStore()
 const profile = useProfileStore()
 const adminStore = useAdminStore()
+const router = useRouter()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
@@ -246,11 +248,24 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   adminStore.init()
   profile.loadConfig()
+  handleRedirect()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
+
+function handleRedirect() {
+  const redirect = sessionStorage.getItem('redirect')
+  if (redirect) {
+    sessionStorage.removeItem('redirect')
+    const base = import.meta.env.BASE_URL
+    const routePath = redirect.replace(base, '').replace(/\/$/, '')
+    if (routePath && routePath !== '') {
+      router.push(routePath.startsWith('/') ? routePath : '/' + routePath)
+    }
+  }
+}
 </script>
 
 <style>

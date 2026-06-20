@@ -10,16 +10,28 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/ai-proxy
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
+      - uses: actions/setup-node@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: workers/ai-proxy
-          preCommands: |
-            echo "$DEEPSEEK_API_KEY" | wrangler secret put DEEPSEEK_API_KEY
-          command: deploy
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: workers/ai-proxy/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set DeepSeek API key as Worker secret
+        run: echo "$DEEPSEEK_API_KEY" | npx wrangler secret put DEEPSEEK_API_KEY
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+      - name: Deploy Worker
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -307,7 +307,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, inject, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, inject, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useProfileStore } from '@/stores/profile'
 import { useAdminStore } from '@/stores/admin'
 import { GitHubService } from '@/services/github'

@@ -142,7 +142,7 @@ const messagesContainer = ref<HTMLElement | null>(null)
 	  '聊聊你的朋友们',
 	]
 
-const WORKER_URL = 'https://personal-website-ai-proxy.vercel.app/api/proxy'
+const WORKER_URL = 'https://ai.rkyzzy.xyz'
 
 // 构建 system prompt
 function buildSystemPrompt(): string {

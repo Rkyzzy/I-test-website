@@ -149,7 +149,6 @@ export class GitHubService {
   // 删除博客文章
   async deletePost(slug: string): Promise<void> {
     const mdPath = `public/content/posts/${slug}.md`
-    const indexPath = 'public/content/posts/posts.json'
 
     try {
       const { sha } = await this.getFileContent(mdPath)
@@ -171,22 +170,6 @@ export class GitHubService {
     } catch (err: any) {
       if (err.message?.includes('404') || err.message?.includes('Not Found')) {
         // 文件不存在，继续
-      } else {
-        throw err
-      }
-    }
-
-    // Also update posts.json to remove the deleted post
-    try {
-      const { content: indexContent } = await this.getFileContent(indexPath)
-      if (indexContent) {
-        let posts: Record<string, any>[] = JSON.parse(indexContent)
-        posts = posts.filter((p: Record<string, any>) => p.slug !== slug)
-        await this.writeFile(indexPath, JSON.stringify(posts, null, 2), 'Update posts index: ' + slug)
-      }
-    } catch (err: any) {
-      if (err.message?.includes('404') || err.message?.includes('Not Found')) {
-        // 文件不存在，忽略
       } else {
         throw err
       }

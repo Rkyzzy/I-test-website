@@ -1,5 +1,6 @@
 <template>
   <n-config-provider :theme="themeStore.isDark ? darkTheme : lightTheme" :theme-overrides="themeOverrides">
+    <n-dialog-provider>
     <n-message-provider>
       <div class="min-h-screen" :class="{ dark: themeStore.isDark }">
         <!-- 顶部导航 -->
@@ -133,6 +134,7 @@
         <AdminLoginModal v-model:show="showLoginModal" />
       </div>
     </n-message-provider>
+    </n-dialog-provider>
   </n-config-provider>
 </template>
 

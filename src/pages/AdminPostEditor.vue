@@ -297,7 +297,7 @@ ${form.value.content}
   const github = new GitHubService(adminStore.token)
 
   try {
-    await github.savePost(slug, dateStr, form.value.title, form.value.category, form.value.tags, form.value.cover, form.value.excerpt, mdContent)
+    await github.savePost(slug, form.value.title, mdContent)
     message.success(isEditing.value ? '文章已更新' : '文章已发布')
     router.push('/admin')
   } catch (err: any) {
@@ -369,7 +369,7 @@ onMounted(() => {
 }
 
 .dark :deep(.blog-content) {
-  color: #e6edf3;
+  color: #c9d1d9;
 }
 
 :deep(.blog-content h2) {
@@ -402,6 +402,15 @@ onMounted(() => {
   background: rgba(88, 166, 255, 0.1);
   color: #58a6ff;
   font-size: 0.875em;
+  background: rgba(88, 166, 255, 0.15) !important;
+}
+
+:deep(.blog-content a) {
+  color: #0969da;
+}
+
+.dark :deep(.blog-content a) {
+  color: #58a6ff;
 }
 
 :deep(.blog-content pre) {

@@ -55,19 +55,5 @@
       "AI"
     ],
     "category": "技术"
-  },
-  {
-    "slug": "my-learning-philosophy",
-    "title": "我的学习方法论：高效学习的 5 个原则",
-    "excerpt": "高效学习是每个工程师必备的技能。这篇文章分享了多年来总结的学习方法和思考。",
-    "cover": "https://picsum.photos/seed/learn/1200/600",
-    "date": "2024-01-01",
-    "readTime": 6,
-    "tags": [
-      "学习方法",
-      "效率",
-      "成长"
-    ],
-    "category": "思考"
   }
 ]

@@ -256,9 +256,13 @@ onUnmounted(() => {
 })
 
 function handleRedirect() {
-  const redirect = sessionStorage.getItem('redirect')
+  const params = new URLSearchParams(window.location.search)
+  const redirect = params.get('redirect') || sessionStorage.getItem('redirect')
   if (redirect) {
     sessionStorage.removeItem('redirect')
+    if (params.get('redirect')) {
+      window.history.replaceState({}, '', window.location.pathname)
+    }
     const base = import.meta.env.BASE_URL
     const routePath = redirect.replace(base, '').replace(/\/$/, '')
     if (routePath && routePath !== '') {

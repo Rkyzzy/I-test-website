@@ -368,7 +368,7 @@ onMounted(() => {
   color: #1f2328;
 }
 
-.dark :deep(.blog-content) {
+:global(.dark) :deep(.blog-content) {
   color: #c9d1d9;
 }
 
@@ -381,7 +381,7 @@ onMounted(() => {
   border-bottom: 1px solid #d0d7de;
 }
 
-.dark :deep(.blog-content h2) {
+:global(.dark) :deep(.blog-content h2) {
   border-bottom-color: #30363d;
 }
 
@@ -409,7 +409,7 @@ onMounted(() => {
   color: #0969da;
 }
 
-.dark :deep(.blog-content a) {
+:global(.dark) :deep(.blog-content a) {
   color: #58a6ff;
 }
 

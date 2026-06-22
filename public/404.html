@@ -5,14 +5,14 @@
   <title>Redirecting...</title>
   <script>
     var path = location.pathname;
-    var previewMatch = path.match(/^\/I-test-website\/preview\/([^\/]+)/);
+    var previewMatch = path.match(/^\/preview\/([^\/]+)/);
     if (previewMatch) {
       var previewDir = previewMatch[0];
       sessionStorage.setItem('redirect', path);
       location.replace(previewDir + '/index.html');
     } else {
       sessionStorage.setItem('redirect', path);
-      location.replace('/I-test-website/');
+      location.replace('/');
     }
   </script>
 </head>

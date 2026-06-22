@@ -13,5 +13,4 @@ export default defineConfig({
     port: 5173,
     host: true,
   },
-  base: '/I-test-website/',
 })

@@ -27,11 +27,11 @@ jobs:
           BRANCH="${GITHUB_REF#refs/heads/}"
           SAFE_BRANCH="$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9]/-/g')"
           if [ "$BRANCH" = "main" ]; then
-            echo "base=/I-test-website/" >> "$GITHUB_OUTPUT"
+            echo "base=/" >> "$GITHUB_OUTPUT"
             echo "dest=." >> "$GITHUB_OUTPUT"
             echo "is_preview=false" >> "$GITHUB_OUTPUT"
           else
-            echo "base=/I-test-website/preview/$SAFE_BRANCH/" >> "$GITHUB_OUTPUT"
+            echo "base=/preview/$SAFE_BRANCH/" >> "$GITHUB_OUTPUT"
             echo "dest=preview/$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
             echo "is_preview=true" >> "$GITHUB_OUTPUT"
           fi
@@ -56,3 +56,4 @@ jobs:
           publish_dir: dist
           destination_dir: ${{ steps.paths.outputs.dest }}
           keep_files: true
+          cname: rkyzzy.xyz

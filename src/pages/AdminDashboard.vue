@@ -187,7 +187,7 @@ function editPost(slug: string) {
 }
 
 function previewPost(slug: string) {
-  window.open(`/blog/${slug}`, '_blank')
+  router.push('/blog/' + slug)
 }
 
 function deletePost(post: BlogPost) {

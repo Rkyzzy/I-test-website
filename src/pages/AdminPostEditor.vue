@@ -363,13 +363,9 @@ onMounted(() => {
 }
 
 :deep(.blog-content) {
+  color: var(--n-text-color, #1f2328);
   font-size: 1rem;
   line-height: 1.8;
-  color: #1f2328;
-}
-
-:global(.dark) :deep(.blog-content) {
-  color: #c9d1d9;
 }
 
 :deep(.blog-content h2) {
@@ -379,10 +375,6 @@ onMounted(() => {
   margin-bottom: 0.75rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid #d0d7de;
-}
-
-:global(.dark) :deep(.blog-content h2) {
-  border-bottom-color: #30363d;
 }
 
 :deep(.blog-content h3) {
@@ -406,11 +398,7 @@ onMounted(() => {
 }
 
 :deep(.blog-content a) {
-  color: #0969da;
-}
-
-:global(.dark) :deep(.blog-content a) {
-  color: #58a6ff;
+  color: var(--n-primary-color, #0969da);
 }
 
 :deep(.blog-content pre) {

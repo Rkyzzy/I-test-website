@@ -29,20 +29,6 @@
     "category": "生活"
   },
   {
-    "slug": "getting-started-with-vue3",
-    "title": "Vue 3 入门指南：组合式 API 与响应式系统详解",
-    "excerpt": "Vue 3 是 Vue.js 的最新主要版本，带来了组合式 API、Proxy 响应式系统、TypeScript 支持等重磅特性。本文带你系统入门 Vue 3 的核心概念。",
-    "cover": "https://picsum.photos/seed/vue3/1200/600",
-    "date": "2024-01-15",
-    "readTime": 8,
-    "tags": [
-      "Vue",
-      "前端",
-      "JavaScript"
-    ],
-    "category": "技术"
-  },
-  {
     "slug": "design-patterns-in-frontend",
     "title": "前端设计模式实战：从观察者到策略模式",
     "excerpt": "设计模式是软件开发中经过验证的解决方案。本文探讨了在前端开发中如何应用观察者模式、策略模式、工厂模式等经典设计模式。",

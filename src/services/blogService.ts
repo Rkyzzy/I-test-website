@@ -58,23 +58,21 @@ function parseFrontmatter(md: string): { frontmatter: PostFrontmatter | null; co
 
 async function fetchRemoteIndex(): Promise<PostMeta[]> {
   if (remotePostsMeta) return remotePostsMeta
-  
+  const cacheBuster = `?t=${Date.now()}`
   try {
-    const resp = await fetch(REMOTE_INDEX_URL)
+    const resp = await fetch(`${REMOTE_INDEX_URL}${cacheBuster}`)
     if (resp.ok) {
       remotePostsMeta = await resp.json()
       return remotePostsMeta!
     }
   } catch {}
-  
   try {
-    const resp = await fetch(`${GITHUB_RAW_BASE}/posts.json`)
+    const resp = await fetch(`${GITHUB_RAW_BASE}/posts.json${cacheBuster}`)
     if (resp.ok) {
       remotePostsMeta = await resp.json()
       return remotePostsMeta!
     }
   } catch {}
-  
   return []
 }
 

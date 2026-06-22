@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "dev": "node scripts/generate-posts-json.mjs && vite",
+    "build": "node scripts/generate-posts-json.mjs && vue-tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

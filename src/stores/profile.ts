@@ -36,7 +36,7 @@ interface Education {
 }
 
 // 获取base路径
-const BASE_PATH = '/I-test-website/'
+const BASE_PATH = '/'
 
 const DEFAULT_CONFIG: SiteConfig = {
   profile: {

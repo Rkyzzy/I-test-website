@@ -138,4 +138,103 @@ export class GitHubService {
     // 返回图片URL
     return `https://${OWNER}.github.io/${REPO}/images/${filename}`
   }
+
+  // 保存博客文章
+  async savePost(
+    slug: string,
+    dateStr: string,
+    title: string,
+    category: string,
+    tags: string[],
+    cover: string,
+    excerpt: string,
+    mdContent: string
+  ): Promise<void> {
+    // 1. 写 Markdown 文件
+    const mdPath = `public/content/posts/${slug}.md`
+    const postMessage = `Update blog post: ${title}`
+    await this.writeFile(mdPath, mdContent, postMessage)
+
+    // 2. 更新 posts.json 索引
+    const indexPath = 'public/content/posts/posts.json'
+    
+    // 读取现有索引
+    let posts: any[] = []
+    try {
+      const { content } = await this.getFileContent(indexPath)
+      if (content) {
+        posts = JSON.parse(content)
+      }
+    } catch {}
+
+    // 更新或添加
+    const readTime = Math.max(1, Math.ceil(mdContent.length / 800))
+    const meta = { slug, title, excerpt, cover, date: dateStr, readTime, tags, category }
+    const existingIdx = posts.findIndex(p => p.slug === slug)
+    if (existingIdx >= 0) {
+      posts[existingIdx] = meta
+    } else {
+      posts.push(meta)
+    }
+    
+    posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+    // 写回索引
+    const indexContent = JSON.stringify(posts, null, 2)
+    // 获取 posts.json 的 SHA 用于更新
+    let indexSha: string | undefined
+    try {
+      const { sha } = await this.getFileContent(indexPath)
+      indexSha = sha
+    } catch {}
+
+    await this.writeFile(indexPath, indexContent, `Update posts index: ${title}`, indexSha)
+  }
+
+  // 删除博客文章
+  async deletePost(slug: string): Promise<void> {
+    const mdPath = `public/content/posts/${slug}.md`
+
+    // 1. 删除 Markdown 文件
+    try {
+      const { sha } = await this.getFileContent(mdPath)
+      if (sha) {
+        const deleteResp = await fetch(`${GITHUB_API_BASE}/repos/${OWNER}/${REPO}/contents/${mdPath}`, {
+          method: 'DELETE',
+          headers: this.getHeaders(),
+          body: JSON.stringify({
+            message: `Delete blog post: ${slug}`,
+            sha,
+            branch: 'main',
+          }),
+        })
+        if (!deleteResp.ok) {
+          const err = await deleteResp.json().catch(() => ({}))
+          throw new Error(err.message || '删除文件失败')
+        }
+      }
+    } catch (err: any) {
+      if (err.message?.includes('404')) {
+        // 文件不存在，继续
+      } else {
+        throw err
+      }
+    }
+
+    // 2. 更新 posts.json 索引
+    const indexPath = 'public/content/posts/posts.json'
+    let posts: any[] = []
+    let indexSha: string | undefined
+    try {
+      const { content, sha } = await this.getFileContent(indexPath)
+      indexSha = sha
+      if (content) {
+        posts = JSON.parse(content)
+      }
+    } catch {}
+
+    const filtered = posts.filter(p => p.slug !== slug)
+    const indexContent = JSON.stringify(filtered, null, 2)
+    await this.writeFile(indexPath, indexContent, `Remove post from index: ${slug}`, indexSha)
+  }
 }

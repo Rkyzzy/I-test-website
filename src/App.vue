@@ -33,7 +33,7 @@
               <!-- 管理员按钮 -->
               <button
                 v-if="adminStore.isAdmin"
-                @click="showAdminPanel = !showAdminPanel"
+                @click="router.push('/admin')"
                 class="px-3 py-1.5 rounded-full bg-[#58a6ff] text-white text-sm font-medium hover:bg-[#0969da] transition-colors flex items-center gap-1.5"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@
         <main class="pt-16">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
-              <component :is="Component" :is-admin-panel="showAdminPanel" />
+              <component :is="Component" />
             </transition>
           </router-view>
         </main>
@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, provide } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { darkTheme, lightTheme } from 'naive-ui'
 import { useThemeStore } from '@/stores/theme'
 import { useProfileStore } from '@/stores/profile'
@@ -153,7 +153,6 @@ const router = useRouter()
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 const showLoginModal = ref(false)
-const showAdminPanel = ref(false)
 
 const navLinks = [
   { name: '首页', path: '/' },
@@ -163,8 +162,6 @@ const navLinks = [
   { name: '标签', path: '/tags' },
   { name: 'AI 对话', path: '/ai' },
 ]
-
-provide('isAdminPanel', showAdminPanel)
 
 const themeOverrides = computed(() => {
   const isDark = themeStore.isDark

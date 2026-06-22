@@ -37,6 +37,17 @@ const routes: RouteRecordRaw[] = [
     name: 'AIChat',
     component: () => import('@/pages/AIChatPage.vue'),
   },
+  // Admin routes
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/pages/AdminDashboard.vue'),
+  },
+  {
+    path: '/admin/posts/:slug',
+    name: 'AdminPostEditor',
+    component: () => import('@/pages/AdminPostEditor.vue'),
+  },
 ]
 
 const router = createRouter({

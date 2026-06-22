@@ -1,11 +1,26 @@
 [
   {
+    "slug": "cli-anything-guide",
+    "title": "CLI-Anything 的生态",
+    "excerpt": "CLI-Anything 不是一个单一的 skill，而是一个由三套互补系统构成的 Agent-Native CLI 生态，核心理念是 \"Making ALL Software Agent-Native\"：让 AI Agent 能以 CLI 的方式控制一切软件",
+    "cover": "",
+    "date": "2026-06-22",
+    "readTime": 10,
+    "tags": [
+      "CLI",
+      "Agent",
+      "CodeX",
+      "Skill"
+    ],
+    "category": "技术"
+  },
+  {
     "slug": "kubernetes-practical-guide",
     "title": "Kubernetes 实战：从开发到生产部署的完整指南",
     "excerpt": "从 Docker 容器化到 Kubernetes 编排，本文带你走完一个微服务应用从开发到生产部署的全过程。",
     "cover": "https://picsum.photos/seed/k8s/1200/600",
     "date": "2024-03-01",
-    "readTime": 14,
+    "readTime": 1,
     "tags": [
       "Kubernetes",
       "DevOps",

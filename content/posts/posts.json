@@ -15,6 +15,18 @@
     "category": "技术"
   },
   {
+    "slug": "test1",
+    "title": "测试文章",
+    "excerpt": "test",
+    "cover": "",
+    "date": "2026-06-22",
+    "readTime": 1,
+    "tags": [
+      "test"
+    ],
+    "category": "技术"
+  },
+  {
     "slug": "macos-productivity-tips",
     "title": "macOS 效率工具与工作流优化指南",
     "excerpt": "经过多年的探索和积累，整理了一套 macOS 上的效率工具和工作流。",

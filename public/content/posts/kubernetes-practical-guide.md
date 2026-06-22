@@ -5,7 +5,7 @@ tags: ["Kubernetes", "DevOps", "容器化"]
 category: "技术"
 cover: "https://picsum.photos/seed/k8s/1200/600"
 excerpt: "从 Docker 容器化到 Kubernetes 编排，本文带你走完一个微服务应用从开发到生产部署的全过程。"
-readTime: 14
+readTime: 1
 ---
 
 ## 为什么需要 Kubernetes

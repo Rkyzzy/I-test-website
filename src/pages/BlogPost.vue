@@ -178,7 +178,9 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { getPostBySlug, getRelatedPosts, extractHeadings } from '@/content/blog/posts'
+import { loadPostBySlug, getRelatedPosts } from '@/services/blogService'
+import { extractHeadings } from '@/content/blog/posts'
+import type { BlogPost } from '@/content/blog/posts'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
@@ -192,11 +194,15 @@ const activeHeading = ref('')
 const mobileTocOpen = ref(false)
 
 const slug = computed(() => route.params.slug as string)
-const postData = computed(() => getPostBySlug(slug.value)!)
-const postFound = computed(() => !!postData.value)
-const relatedPosts = computed(() => postData.value ? getRelatedPosts(postData.value, 3) : [])
-const headings = computed(() => postData.value ? extractHeadings(postData.value.content) : [])
+const postData = ref<BlogPost>({
+  slug: '', title: '', excerpt: '', cover: '', date: '',
+  readTime: 0, tags: [], category: '', content: '',
+})
+const relatedPosts = ref<BlogPost[]>([])
+const headings = ref<{ level: number; text: string; id: string }[]>([])
 const showToc = computed(() => headings.value.length > 0)
+const postFound = computed(() => !!postData.value.content)
+const isLoadingPost = ref(true)
 
 function escapeHtml(str: string): string {
   return str
@@ -234,9 +240,17 @@ const renderedContent = computed(() => {
   return md.render(content)
 })
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('scroll', updateReadingProgress)
   window.addEventListener('scroll', updateActiveHeading)
+
+  const post = await loadPostBySlug(slug.value)
+  if (post) {
+    postData.value = post
+    relatedPosts.value = getRelatedPosts(post, 3)
+    headings.value = extractHeadings(post.content)
+  }
+  isLoadingPost.value = false
   if (postFound.value) {
     loadGiscus()
   }

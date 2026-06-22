@@ -126,6 +126,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { loadAllPosts } from '@/services/blogService'
+import type { BlogPost } from '@/content/blog/posts'
 import {
   categories,
   getAllTags,
@@ -136,19 +138,24 @@ import {
 const router = useRouter()
 const route = useRoute()
 
+const posts = ref<BlogPost[]>(getPostsByCategory('全部'))
 const searchQuery = ref('')
 const selectedTag = ref<string | null>(null)
 const selectedCategory = ref<string>('全部')
 const currentPage = ref(1)
 const perPage = 6
 
-const allTags = getAllTags()
+const allTags = ref<string[]>(getAllTags())
 
 onMounted(() => {
   const tagFromQuery = route.query.tag as string | undefined
   if (tagFromQuery) {
     selectedTag.value = tagFromQuery
   }
+  loadAllPosts().then(allPosts => {
+    posts.value = allPosts
+    allTags.value = getAllTags()
+  }).catch(() => {})
 })
 
 const categoryOptions = categories.map(c => ({ label: c, value: c }))

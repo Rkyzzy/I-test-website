@@ -15,20 +15,6 @@
     "category": "技术"
   },
   {
-    "slug": "kubernetes-practical-guide",
-    "title": "Kubernetes 实战：从开发到生产部署的完整指南",
-    "excerpt": "从 Docker 容器化到 Kubernetes 编排，本文带你走完一个微服务应用从开发到生产部署的全过程。",
-    "cover": "https://picsum.photos/seed/k8s/1200/600",
-    "date": "2024-03-01",
-    "readTime": 1,
-    "tags": [
-      "Kubernetes",
-      "DevOps",
-      "容器化"
-    ],
-    "category": "技术"
-  },
-  {
     "slug": "rust-systems-programming",
     "title": "Rust 系统编程入门：所有权、生命周期与并发",
     "excerpt": "Rust 是一门强调安全、并发和性能的系统编程语言。本文从所有权模型开始带你理解 Rust 的核心概念。",

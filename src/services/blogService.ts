@@ -123,27 +123,27 @@ async function fetchRemotePost(slug: string): Promise<BlogPost | null> {
 }
 
 export async function loadAllPosts(): Promise<BlogPost[]> {
-  const hardcoded = [...hardcodedPosts]
   const remote = await fetchRemoteIndex()
   
-  const slugSet = new Set(hardcoded.map(p => p.slug))
+  // Remote posts override hardcoded ones with the same slug
+  const remoteSlugs = new Set(remote.map(m => m.slug))
+  const filtered = hardcodedPosts.filter(p => !remoteSlugs.has(p.slug))
+  
   for (const meta of remote) {
-    if (!slugSet.has(meta.slug)) {
-      hardcoded.push({
-        slug: meta.slug,
-        title: meta.title,
-        excerpt: meta.excerpt,
-        cover: meta.cover,
-        date: meta.date,
-        readTime: meta.readTime,
-        tags: meta.tags,
-        category: meta.category,
-        content: '',
-      })
-    }
+    filtered.push({
+      slug: meta.slug,
+      title: meta.title,
+      excerpt: meta.excerpt,
+      cover: meta.cover,
+      date: meta.date,
+      readTime: meta.readTime,
+      tags: meta.tags,
+      category: meta.category,
+      content: '',
+    })
   }
   
-  return hardcoded.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 export async function loadPostBySlug(slug: string): Promise<BlogPost | null> {

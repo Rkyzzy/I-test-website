@@ -4,7 +4,7 @@
     "nameEn": "Ziyue Zhou",
     "title": "算法工程师",
     "titleEn": "Algorithm Engineer",
-    "bio": "专注于自动驾驶中的视觉-语言-行动模型、智能体建模与世界模型研究，致力于将前沿AI技术落地到百万辆级的量产产品中。TesT",
+    "bio": "专注于自动驾驶中的视觉-语言-行动模型、智能体建模与世界模型研究，致力于将前沿AI技术落地到百万辆级的量产产品中。TesT2",
     "bioEn": "Focused on VLA, VLN, agentic modeling, and world models for autonomous driving. Passionate about shipping cutting-edge AI to millions of production vehicles.",
     "avatarUrl": "/I-test-website/avatar.png",
     "email": "982993741@qq.com",
@@ -27,6 +27,11 @@
       }
     ]
   },
+  "stats": {
+    "yearsOfExperience": 2,
+    "projectsCompleted": 15,
+    "technologies": 10
+  },
   "techStack": [
     {
       "name": "Python",
@@ -36,37 +41,37 @@
     {
       "name": "PyTorch",
       "category": "Deep Learning",
-      "level": 4
+      "level": 5
     },
     {
-      "name": "TensorFlow",
+      "name": "CCC o",
       "category": "Deep Learning",
-      "level": 4
+      "level": 3
     },
     {
       "name": "Vue.js",
       "category": "Frontend",
-      "level": 4
+      "level": 2
     },
     {
       "name": "TypeScript",
       "category": "Programming Language",
-      "level": 4
+      "level": 2
     },
     {
       "name": "Go",
       "category": "Programming Language",
-      "level": 4
+      "level": 2
     },
     {
       "name": "Docker",
       "category": "DevOps",
-      "level": 4
+      "level": 2
     },
     {
       "name": "Kubernetes",
       "category": "DevOps",
-      "level": 4
+      "level": 2
     }
   ]
 }

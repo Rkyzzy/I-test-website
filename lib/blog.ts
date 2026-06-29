@@ -7,7 +7,8 @@ export interface BlogPost {
   content: string;
 }
 
-export const BASE_PATH = process.env.NODE_ENV === "production" ? "/I-test-website" : "";
+// The site is deployed at root.
+export const BASE_PATH = "";
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {

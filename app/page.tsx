@@ -9,8 +9,7 @@ import { loadConfig } from "@/lib/profile";
 import { useAdmin } from "@/components/admin/admin-context";
 import EditModeBar from "@/components/admin/edit-mode-bar";
 import { GitHubService } from "@/lib/github";
-import type { SiteConfig } from "@/lib/types";
-import type { TechItem } from "@/lib/types";
+import type { SiteConfig, TechItem } from "@/lib/types";
 
 export default function HomePage() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
@@ -27,6 +26,13 @@ export default function HomePage() {
       setConfig(cfg);
       setDraftBio(cfg.profile.bio);
       setDraftTechStack([...cfg.techStack]);
+      if (cfg.stats) {
+        setDraftStats({
+          yearsOfExperience: cfg.stats.yearsOfExperience,
+          projectsCompleted: cfg.stats.projectsCompleted,
+          technologies: cfg.stats.technologies,
+        });
+      }
     });
   }, []);
 
@@ -44,6 +50,7 @@ export default function HomePage() {
           ...config.profile,
           bio: draftBio,
         },
+        stats: draftStats,
         techStack: draftTechStack,
       };
       await gh.saveConfig(updatedConfig);
@@ -59,7 +66,11 @@ export default function HomePage() {
   const handleCancelEditing = useCallback(() => {
     if (!config) return;
     setDraftBio(config.profile.bio);
-    setDraftStats({ yearsOfExperience: 3, projectsCompleted: 20, technologies: 15 });
+    setDraftStats({
+      yearsOfExperience: config.stats?.yearsOfExperience ?? 3,
+      projectsCompleted: config.stats?.projectsCompleted ?? 20,
+      technologies: config.stats?.technologies ?? 15,
+    });
     setDraftTechStack([...config.techStack]);
     setEditMode(false);
   }, [config, setEditMode]);

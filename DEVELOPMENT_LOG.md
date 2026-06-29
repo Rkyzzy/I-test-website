@@ -373,3 +373,37 @@ git push origin codex/restructure
 ### 构建验证
 - [x] 20/20 页面全部生成
 - [x] TypeScript 编译通过，无类型错误
+
+### 修复总结 (2026-06-29) — 编辑模式持久化 Bug
+
+#### 问题1: BASE_PATH 硬编码导致生产环境数据加载404
+- **根因**: `lib/profile.ts` 和 `lib/blog.ts` 中 `BASE_PATH = process.env.NODE_ENV === "production" ? "/I-test-website" : ""`
+- **影响**: 部署到 rkyzzy.xyz（basePath: ""）后，fetch(`/I-test-website/data/site-config.json`) 始终 404 → 回退到 DEFAULT_CONFIG，编辑内容永远看不到
+- **修复**: 改为 `BASE_PATH = ""`（站点部署在根路径）
+- 教育经历 logo 路径也从 `${BASE_PATH}/...` 简化为相对路径
+
+#### 问题2: Blog posts.json 写入路径错误
+- **根因**: `app/admin/edit/page.tsx` 读写路径为 `public/content/posts/posts.json`，但 blog.ts 读取的索引在 `public/content/posts.json`
+- **影响**: 新建文章后，`posts.json` 被写到错误的目录，blog 页面永远读不到新文章
+- **修复**: 读路径 `fetch("/content/posts/posts.json")` → `fetch("/content/posts.json")`，写路径 `public/content/posts/posts.json` → `public/content/posts.json`
+
+#### 问题3: Blog 删除不同步 posts.json 索引
+- **根因**: `app/blog/page.tsx` 删除博文时只删了 `.md` 文件，未更新 `posts.json`
+- **影响**: 删除后 posts.json 仍包含该文章，刷新后文章又出现
+- **修复**: 在 `deletePost()` 之后，通过 GitHub API 读取、过滤、重写 `posts.json`
+
+#### 问题4: Stats 数据硬编码未持久化
+- **根因**: `SiteConfig` 类型无 `stats` 字段；`draftStats` 硬编码为 {3,20,15}；`handleSave` 不保存 stats
+- **影响**: 编辑 stats 后刷新立刻恢复默认值
+- **修复**: 
+  - `lib/types.ts` — `SiteConfig` 新增 `stats?: { yearsOfExperience, projectsCompleted, technologies }`
+  - `lib/profile.ts` — `DEFAULT_CONFIG` 新增 `stats` 字段
+  - `app/page.tsx` — useEffect 从 `cfg.stats` 加载；handleSave 写入 `draftStats`
+
+### 构建验证
+- [x] 20/20 页面全部生成
+- [x] TypeScript 编译通过，无类型错误
+
+### 待办
+- [ ] **GitHub Pages 预览分支的 BASE_PATH** — 预览分支部署到 `/preview/<branch>/` 时，需要设置 `NEXT_PUBLIC_BASE_PATH` 环境变量
+- [ ] **Avatar base64 过大** — `site-config.json` 因内嵌 base64 avatar 达 3.4MB，GitHub API 写入可能超限，建议迁移到独立文件

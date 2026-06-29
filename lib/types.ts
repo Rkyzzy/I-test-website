@@ -46,4 +46,9 @@ export interface Experience {
 export interface SiteConfig {
   profile: Profile
   techStack: TechItem[]
+  stats?: {
+    yearsOfExperience: number;
+    projectsCompleted: number;
+    technologies: number;
+  };
 }

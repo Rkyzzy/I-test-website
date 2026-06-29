@@ -63,6 +63,15 @@ export default function BlogPage() {
                             import("@/lib/github").then(({ GitHubService }) => {
                               const gh = new GitHubService(token);
                               gh.deletePost(post.slug).then(() => {
+                                // Also remove from posts.json index
+                                return gh.getFile("public/content/posts.json").then(({ content }) => {
+                                  if (content) {
+                                    const posts2 = JSON.parse(content);
+                                    const updated = posts2.filter((p: any) => p.slug !== post.slug);
+                                    return gh.writeFile("public/content/posts.json", JSON.stringify(updated, null, 2), "Delete post: " + post.title);
+                                  }
+                                });
+                              }).then(() => {
                                 // Refresh posts
                                 getAllPosts().then(setPosts);
                               }).catch((err: Error) => alert("删除失败: " + err.message));

@@ -110,7 +110,7 @@ ${content.trim()}`;
       await gh.savePost(finalSlug, title, mdContent);
 
       try {
-        const r = await fetch("/content/posts/posts.json?t=" + Date.now());
+        const r = await fetch("/content/posts.json?t=" + Date.now());
         const existingPosts: PostMeta[] = r.ok ? await r.json() : [];
         const now = new Date().toISOString().split("T")[0];
 
@@ -134,7 +134,7 @@ ${content.trim()}`;
         }
 
         await gh.writeFile(
-          "public/content/posts/posts.json",
+          "public/content/posts.json",
           JSON.stringify(newPosts, null, 2),
           `Update posts index: ${title}`
         );

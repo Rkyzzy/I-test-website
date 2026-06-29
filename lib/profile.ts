@@ -1,7 +1,6 @@
 import type { Education, Experience, SiteConfig } from "./types";
-
-export const BASE_PATH = process.env.NODE_ENV === "production" ? "/I-test-website" : "";
-
+ // The site is deployed at root. For preview deployments, set NEXT_PUBLIC_BASE_PATH env var at build time.
+export const BASE_PATH = "";
 const DEFAULT_CONFIG: SiteConfig = {
   profile: {
     name: "周子越",
@@ -19,6 +18,11 @@ const DEFAULT_CONFIG: SiteConfig = {
       { name: "Email", icon: "mail", url: "mailto:982993741@qq.com" },
     ],
   },
+  stats: {
+    yearsOfExperience: 3,
+    projectsCompleted: 20,
+    technologies: 15,
+  },
   techStack: [
     { name: "Python", category: "Programming Language", level: 5 },
     { name: "PyTorch", category: "Deep Learning", level: 5 },
@@ -30,7 +34,6 @@ const DEFAULT_CONFIG: SiteConfig = {
     { name: "Kubernetes", category: "DevOps", level: 4 },
   ],
 };
-
 export const EDUCATION: Education[] = [
   {
     school: "南洋理工大学",
@@ -64,7 +67,6 @@ export const EDUCATION: Education[] = [
     url: "https://www.berkeley.edu",
   },
 ];
-
 export const EXPERIENCE: Experience[] = [
   {
     title: "算法工程师",
@@ -92,7 +94,6 @@ export const EXPERIENCE: Experience[] = [
     highlights: ["负责车端在线建图算法研发"],
   },
 ];
-
 export async function loadConfig(): Promise<SiteConfig> {
   try {
     const res = await fetch(`${BASE_PATH}/data/site-config.json?t=${Date.now()}`);

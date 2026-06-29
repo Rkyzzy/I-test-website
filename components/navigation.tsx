@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
-import { Moon, Sun, Menu, X, Lock } from "lucide-react";
+import { useAdmin } from "./admin/admin-context";
+import { Moon, Sun, Menu, X, Lock, PenLine, LogOut } from "lucide-react";
 import AdminLoginModal from "./admin/admin-login-modal";
 
 const NAV_LINKS = [
@@ -18,9 +19,9 @@ const NAV_LINKS = [
 export default function Navigation() {
   const pathname = usePathname();
   const { theme, toggle } = useTheme();
+  const { isAdmin, editMode, setEditMode, logout } = useAdmin();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
 
   useEffect(() => {
@@ -28,18 +29,6 @@ export default function Navigation() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("admin_token");
-    setIsAdmin(!!token);
-  }, []);
-
-  // Re-check auth after modal closes (e.g. after successful login)
-  const handleAdminModalClose = () => {
-    setShowAdminModal(false);
-    const token = localStorage.getItem("admin_token");
-    setIsAdmin(!!token);
-  };
 
   return (
     <header
@@ -76,14 +65,36 @@ export default function Navigation() {
 
         <div className="flex items-center gap-3">
           {isAdmin ? (
-            <Link
-              href="/admin"
-              className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors text-signal"
-              aria-label="Admin panel"
-              title="管理后台"
-            >
-              <Lock className="w-4 h-4" />
-            </Link>
+            <>
+              <button
+                onClick={() => setEditMode(!editMode)}
+                className={`w-9 h-9 rounded-full border flex items-center justify-center hover:border-accent transition-colors ${
+                  editMode
+                    ? "border-signal text-signal bg-signal/10"
+                    : "border-deck-600 text-deck-400"
+                }`}
+                aria-label="编辑模式"
+                title={editMode ? "退出编辑模式" : "进入编辑模式"}
+              >
+                <PenLine className="w-4 h-4" />
+              </button>
+              <Link
+                href="/admin"
+                className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors text-deck-400"
+                aria-label="管理后台"
+                title="管理后台"
+              >
+                <Lock className="w-4 h-4" />
+              </Link>
+              <button
+                onClick={() => { logout(); setMobileOpen(false); }}
+                className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-warm transition-colors text-deck-400"
+                aria-label="退出登录"
+                title="退出登录"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </>
           ) : (
             <button
               onClick={() => setShowAdminModal(true)}
@@ -95,7 +106,7 @@ export default function Navigation() {
             </button>
           )}
           {showAdminModal && (
-            <AdminLoginModal onClose={handleAdminModalClose} />
+            <AdminLoginModal onClose={() => setShowAdminModal(false)} />
           )}
           <button
             onClick={toggle}
@@ -127,13 +138,33 @@ export default function Navigation() {
         <div className="md:hidden bg-deck-900/95 backdrop-blur-xl border-b border-deck-600/50">
           <div className="px-6 py-4 space-y-4">
             {isAdmin && (
-              <Link
-                href="/admin"
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm font-medium text-signal transition-colors"
-              >
-                管理后台
-              </Link>
+              <>
+                <div className="flex items-center gap-2 px-2 py-1 text-xs text-deck-500 border-b border-deck-600/30 pb-2 mb-2">
+                  <Lock className="w-3 h-3" />
+                  管理员模式
+                </div>
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-sm font-medium text-signal transition-colors"
+                >
+                  管理后台
+                </Link>
+                <button
+                  onClick={() => { setEditMode(!editMode); setMobileOpen(false); }}
+                  className={`block text-sm font-medium transition-colors ${
+                    editMode ? "text-signal" : "text-deck-300 hover:text-deck-100"
+                  }`}
+                >
+                  {editMode ? "退出编辑模式" : "进入编辑模式"}
+                </button>
+                <button
+                  onClick={() => { logout(); setMobileOpen(false); }}
+                  className="block text-sm font-medium text-warm transition-colors"
+                >
+                  退出登录
+                </button>
+              </>
             )}
             {NAV_LINKS.map((link) => (
               <Link

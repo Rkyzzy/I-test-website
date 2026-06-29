@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { Shield, Loader2, X } from "lucide-react";
+import { useAdmin } from "./admin-context";
 
 export default function AdminLoginModal({ onClose }: { onClose: () => void }) {
   const [token, setToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { login } = useAdmin();
 
   // Focus the input on mount
   useEffect(() => {
@@ -36,9 +38,8 @@ export default function AdminLoginModal({ onClose }: { onClose: () => void }) {
       }
       localStorage.setItem("admin_token", token.trim());
       localStorage.setItem("admin_user", JSON.stringify(user));
+      login(token.trim());
       onClose();
-      // Navigate to admin panel
-      window.location.href = "/admin";
     } catch (err: any) {
       setError(err.message);
     } finally {

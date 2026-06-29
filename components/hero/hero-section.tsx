@@ -13,8 +13,12 @@ interface HeroProps {
   title: string;
   titleEn: string;
   bio: string;
+  bioEn?: string;
   avatarUrl: string;
   socialLinks: SocialLink[];
+  editMode?: boolean;
+  draftBio?: string;
+  onBioChange?: (val: string) => void;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -45,8 +49,12 @@ export default function HeroSection({
   title,
   titleEn,
   bio,
+  bioEn,
   avatarUrl,
   socialLinks,
+  editMode,
+  draftBio,
+  onBioChange,
 }: HeroProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -101,13 +109,27 @@ export default function HeroSection({
           {titleEn} · {title}
         </motion.p>
 
-        {/* Bio */}
-        <motion.p
-          variants={item}
-          className="text-base md:text-lg text-deck-300/80 max-w-2xl mx-auto leading-relaxed mb-10"
-        >
-          {bio}
-        </motion.p>
+        {/* Bio - editable in edit mode */}
+        {editMode && onBioChange ? (
+          <motion.div variants={item} className="mb-10 max-w-2xl mx-auto">
+            <label className="block text-xs text-deck-500 mb-1.5 text-left font-mono">
+              个人简介 (拖拽右下角调整高度)
+            </label>
+            <textarea
+              value={draftBio ?? bio}
+              onChange={(e) => onBioChange(e.target.value)}
+              className="w-full bg-deck-800 border border-accent/40 rounded-xl px-4 py-3 text-base text-deck-100 placeholder-deck-400 outline-none focus:border-accent transition-colors resize-y min-h-[100px] leading-relaxed"
+              rows={4}
+            />
+          </motion.div>
+        ) : (
+          <motion.p
+            variants={item}
+            className="text-base md:text-lg text-deck-300/80 max-w-2xl mx-auto leading-relaxed mb-10"
+          >
+            {bio}
+          </motion.p>
+        )}
 
         {/* Social Links */}
         <motion.div variants={item} className="flex justify-center gap-4 mb-16">

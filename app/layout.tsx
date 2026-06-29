@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navigation from "@/components/navigation";
+import { AdminProvider } from "@/components/admin/admin-context";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -40,8 +41,10 @@ export default function RootLayout({
     >
       <body className="bg-deck-900 text-deck-100 antialiased">
         <ThemeProvider>
+          <AdminProvider>
           <Navigation />
           <main className="min-h-screen">{children}</main>
+          </AdminProvider>
           <footer className="py-8 px-6 border-t border-deck-600/30">
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-deck-400">
               <p>© 2024 周子越. All rights reserved.</p>

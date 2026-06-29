@@ -322,3 +322,54 @@ git push origin codex/restructure
 | Q8 | Admin 面板无入口按钮 | ✅ **已修复** |
 | Q9 | Admin 编辑器预览纯文本 | ⏳ P2 |
 | Q10 | `router.push` 在 admin layout guard 中不响应 | ✅ **已修复** — 改用 `window.location.href` |
+
+---
+
+## v2.2.0 (2026-06-29) — Inline Edit Mode 架构重构
+
+### 核心变更
+
+将 Admin 从"跳转到独立管理后台页面"改为"在当前页面内联编辑"的模式。
+
+**架构变更**：
+- 创建 `AdminContext` (`components/admin/admin-context.tsx`) — 统一管理 auth 状态 + editMode 开关
+  - `isAdmin` — 是否已通过 GitHub Token 认证
+  - `editMode` / `setEditMode` — 编辑模式开关
+  - `login()` / `logout()` — 登录/登出
+  - 作为 Provider 包裹在 `app/layout.tsx` 的 ThemeProvider 内
+
+### 新增
+- [x] **`components/admin/admin-context.tsx`** — AdminContext Provider，统一管理认证状态与编辑模式
+- [x] **`components/admin/edit-mode-bar.tsx`** — 编辑模式底部浮动工具栏（保存/取消按钮 + 加载状态）
+
+### 修改
+- [x] **`app/layout.tsx`** — 包裹 `AdminProvider`
+- [x] **`components/admin/admin-login-modal.tsx`** — 移除 `window.location.href = "/admin"` 跳转，改用 context.login() 仅验证不跳转
+- [x] **`components/navigation.tsx`** — 重构管理入口：
+  - 未登录：Lock 按钮 → 弹出登录弹窗
+  - 已登录：Lock 按钮 → 链接到 `/admin` 管理后台；新增 PenLine 编辑模式切换按钮（高亮信号绿）；新增 LogOut 退出按钮
+  - 移动端菜单：新增"进入/退出编辑模式"和"退出登录"选项
+- [x] **`components/hero/hero-section.tsx`** — bio 在编辑模式下变为可编辑 `<textarea>`（拖拽调整高度）
+- [x] **`components/hero/stats-bar.tsx`** — 三个统计数字在编辑模式下变为可编辑 `<input type="number">`
+- [x] **`components/hero/skills-section.tsx`** — 技术栈在编辑模式下变为可编辑（名称/分类/熟练度滑块 + 添加/删除）
+- [x] **`app/page.tsx`** — 管理草稿状态与保存逻辑（draftBio/draftStats/draftTechStack），集成 EditModeBar
+- [x] **`app/blog/page.tsx`** — 编辑模式下博客卡片显示编辑/删除按钮 + 新建文章按钮
+
+### 用户交互流程
+1. 点击 Lock 按钮 → 弹出登录弹窗 → 输入 GitHub Token → 验证成功 → 关闭弹窗（当前页面不变）
+2. 导航栏出现 PenLine 编辑模式开关按钮（绿色高亮表示开启）
+3. 开启编辑模式：
+   - 首页：bio 变成可编辑文字框，统计数字变成输入框，技术栈显示编辑控件
+   - 博客页：每篇文章显示编辑/删除按钮 + 新建文章按钮
+4. 底部浮动条显示「编辑模式」状态 + 保存/取消按钮
+5. 点击保存 → 调用 GitHubService.saveConfig() 更新 site-config.json
+
+### 已知问题更新
+| # | 问题 | 状态 |
+|---|------|------|
+| Q9 | Admin 编辑器预览纯文本 | ⏳ P2 |
+| Q11 | 编辑模式下 stats 数值暂时硬编码，未从 site-config.json 读取 | ⏳ P2 |
+
+### 构建验证
+- [x] 20/20 页面全部生成
+- [x] TypeScript 编译通过，无类型错误

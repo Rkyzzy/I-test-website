@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Moon, Sun, Menu, X, Lock } from "lucide-react";
+import AdminLoginModal from "./admin/admin-login-modal";
 
 const NAV_LINKS = [
   { name: "首页", path: "/" },
@@ -20,6 +21,7 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -31,6 +33,13 @@ export default function Navigation() {
     const token = localStorage.getItem("admin_token");
     setIsAdmin(!!token);
   }, []);
+
+  // Re-check auth after modal closes (e.g. after successful login)
+  const handleAdminModalClose = () => {
+    setShowAdminModal(false);
+    const token = localStorage.getItem("admin_token");
+    setIsAdmin(!!token);
+  };
 
   return (
     <header
@@ -66,16 +75,28 @@ export default function Navigation() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link
-            href={isAdmin ? "/admin" : "/admin/login"}
-            className={`w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors ${
-              isAdmin ? "text-signal" : "text-deck-400"
-            }`}
-            aria-label="Admin panel"
-            title={isAdmin ? "管理后台" : "管理员登录"}
-          >
-            <Lock className="w-4 h-4" />
-          </Link>
+          {isAdmin ? (
+            <Link
+              href="/admin"
+              className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors text-signal"
+              aria-label="Admin panel"
+              title="管理后台"
+            >
+              <Lock className="w-4 h-4" />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setShowAdminModal(true)}
+              className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors text-deck-400"
+              aria-label="管理员登录"
+              title="管理员登录"
+            >
+              <Lock className="w-4 h-4" />
+            </button>
+          )}
+          {showAdminModal && (
+            <AdminLoginModal onClose={handleAdminModalClose} />
+          )}
           <button
             onClick={toggle}
             className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors"
@@ -105,15 +126,15 @@ export default function Navigation() {
       {mobileOpen && (
         <div className="md:hidden bg-deck-900/95 backdrop-blur-xl border-b border-deck-600/50">
           <div className="px-6 py-4 space-y-4">
-            <Link
-              href={isAdmin ? "/admin" : "/admin/login"}
-              onClick={() => setMobileOpen(false)}
-              className={`block text-sm font-medium transition-colors ${
-                isAdmin ? "text-signal" : "text-deck-300 hover:text-deck-100"
-              }`}
-            >
-              管理后台
-            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium text-signal transition-colors"
+              >
+                管理后台
+              </Link>
+            )}
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}

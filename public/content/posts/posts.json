@@ -1,5 +1,16 @@
 [
   {
+    "slug": "testpapertry",
+    "title": "测试文章",
+    "date": "2026-06-29",
+    "category": "技术",
+    "tags": [
+      "hello"
+    ],
+    "excerpt": "aaa",
+    "cover": ""
+  },
+  {
     "slug": "cli-anything-guide",
     "title": "CLI-Anything 的生态",
     "excerpt": "CLI-Anything 不是一个单一的 skill，而是一个由三套互补系统构成的 Agent-Native CLI 生态，核心理念是 \"Making ALL Software Agent-Native\"：让 AI Agent 能以 CLI 的方式控制一切软件",

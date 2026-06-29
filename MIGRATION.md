@@ -140,3 +140,11 @@ codex/restructure → PR → main (merge)
 | M11 | — | Admin 面板迁移（GitHub CMS） | ⏳ |
 | M12 | — | 浅色模式完整适配 | ⏳ |
 | M13 | — | 性能优化 / SEO / 元信息完善 | ⏳ |
+
+### MileStone 更新 v2
+
+| # | 日期 | 内容 | 状态 |
+|---|------|------|------|
+| M10 | 2026-06-29 | AI Chat 页面迁移 (Vue→React, Cloudflare Worker) | ✅ |
+| M11 | 2026-06-29 | Admin 面板迁移 (Login/Dashboard/PostEditor) | ✅ |
+| M12 | 2026-06-29 | 昼夜模式修复 (light mode CSS variables) | ✅ |

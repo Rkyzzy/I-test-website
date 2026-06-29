@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X, Lock } from "lucide-react";
 
 const NAV_LINKS = [
   { name: "首页", path: "/" },
@@ -19,11 +19,17 @@ export default function Navigation() {
   const { theme, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("admin_token");
+    setIsAdmin(!!token);
   }, []);
 
   return (
@@ -60,6 +66,16 @@ export default function Navigation() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link
+            href={isAdmin ? "/admin" : "/admin/login"}
+            className={`w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors ${
+              isAdmin ? "text-signal" : "text-deck-400"
+            }`}
+            aria-label="Admin panel"
+            title={isAdmin ? "管理后台" : "管理员登录"}
+          >
+            <Lock className="w-4 h-4" />
+          </Link>
           <button
             onClick={toggle}
             className="w-9 h-9 rounded-full border border-deck-600 flex items-center justify-center hover:border-accent transition-colors"
@@ -89,6 +105,15 @@ export default function Navigation() {
       {mobileOpen && (
         <div className="md:hidden bg-deck-900/95 backdrop-blur-xl border-b border-deck-600/50">
           <div className="px-6 py-4 space-y-4">
+            <Link
+              href={isAdmin ? "/admin" : "/admin/login"}
+              onClick={() => setMobileOpen(false)}
+              className={`block text-sm font-medium transition-colors ${
+                isAdmin ? "text-signal" : "text-deck-300 hover:text-deck-100"
+              }`}
+            >
+              管理后台
+            </Link>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}

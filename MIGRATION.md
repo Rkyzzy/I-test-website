@@ -148,3 +148,10 @@ codex/restructure → PR → main (merge)
 | M10 | 2026-06-29 | AI Chat 页面迁移 (Vue→React, Cloudflare Worker) | ✅ |
 | M11 | 2026-06-29 | Admin 面板迁移 (Login/Dashboard/PostEditor) | ✅ |
 | M12 | 2026-06-29 | 昼夜模式修复 (light mode CSS variables) | ✅ |
+
+### MileStone v3 — 发现问题待修复
+
+| # | 日期 | 内容 | 状态 |
+|---|------|------|------|
+| M13 | 2026-06-29 | AI Chat: Worker 请求缺少 systemPrompt 参数，返回通用错误 | ✅ 已修复 |
+| M14 | 2026-06-29 | Admin: 缺少入口按钮（导航栏无 admin 登录入口） | ✅ 已修复 |

@@ -270,3 +270,32 @@ git push origin codex/restructure
 |---|------|------|
 | Q5 | Admin 编辑器预览模式使用纯文本，非 Markdown 渲染 | 可接受，后续可集成 react-markdown |
 | Q6 | AI Chat Worker 未部署到 Cloudflare（需手动 `wrangler deploy`） | 待处理 |
+
+### 新发现的问题 (2026-06-29 测试反馈)
+
+| # | 问题 | 原因分析 | 优先级 |
+|---|------|----------|--------|
+| Q7 | AI Chat 请求失败，只返回"抱歉，我现在无法回答问题" | 新 `sendToAI()` 未传递 `systemPrompt` 字段。Worker 源码 (`workers/ai-proxy/src/index.ts`) 请求体中需要 `{ messages, systemPrompt }`，但新版 `ai-chat.tsx` 只传了 `{ messages }`。旧版 Vue 调用了 `buildSystemPrompt()` 构建了完整的系统提示词。新版重构时移除了该函数，导致 Worker 收到空 prompt，请求失败 | **P0** |
+| Q8 | Admin 面板无入口按钮 | 旧版 Vue 在导航栏主题切换按钮旁边有一个"管理员"按钮，点开是 AdminLoginModal。新版 React 的 Navigation 组件未实现此入口，需手动访问 `/admin/login` URL 才能进入 | **P0** |
+| Q9 | Admin 编辑器预览模式使用纯文本显示 | 旧的 Vue 版使用 markdown-it + highlight.js 渲染 Markdown 预览。新版直接用 `<div>` 显示原始文本 | P2 |
+
+### 更新后的 TODO (P0 修复)
+
+#### P0 — 本轮修复
+- [x] **AI Chat 修复**: 在 `sendToAI()` 中加入 `systemPrompt` 字段
+  - 新增 `buildSystemPrompt()` 异步函数，从 `/data/site-config.json` 加载 profile/techStack
+  - 内联教育经历（南科大/南洋理工/UC Berkeley）和工作经历（理想汽车）常量
+  - 构建包含完整个人信息/技能/性格/兴趣/好友/回答风格的 system prompt
+  - 请求 body 中加入 `{ messages, systemPrompt }` 字段
+  - init effect 改为异步，先加载配置构建 prompt 再标记 configReady
+- [x] **Admin 入口**: 在 Navigation 组件中添加管理员入口按钮
+  - 添加 `<Lock>` 图标按钮，位于主题切换按钮左侧
+  - 未登录时链接到 `/admin/login`（灰色），已登录链接到 `/admin`（signal 绿色）
+  - 移动端菜单底部添加"管理后台"链接
+
+### 已知问题更新
+| # | 问题 | 状态 |
+|---|------|------|
+| Q7 | AI Chat 请求失败，只返回"抱歉，我现在无法回答问题" | ✅ **已修复** — 添加 systemPrompt |
+| Q8 | Admin 面板无入口按钮 | ✅ **已修复** — 导航栏添加 Lock 图标链接 |
+| Q9 | Admin 编辑器预览模式使用纯文本显示 | ⏳ P2 — 待后续处理 |

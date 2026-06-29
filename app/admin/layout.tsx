@@ -13,6 +13,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [authed, setAuthed] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
@@ -23,10 +24,13 @@ export default function AdminLayout({
         if (u.login === "Rkyzzy") setAuthed(true);
       } catch {}
     }
+    setInitialized(true);
   }, []);
 
   // Login page is always accessible
   const isLogin = pathname === "/admin/login";
+
+  if (!initialized) return null;
 
   return (
     <div className="min-h-screen pb-20">
@@ -84,8 +88,8 @@ export default function AdminLayout({
           <div className="text-center py-20 text-deck-400">
             <p>请先登录</p>
             <button
-              onClick={() => router.push("/admin/login")}
-              className="mt-4 text-accent hover:underline"
+              onClick={() => { window.location.href = "/admin/login"; }}
+              className="mt-4 px-4 py-2 rounded-xl bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-colors"
             >
               前往登录
             </button>

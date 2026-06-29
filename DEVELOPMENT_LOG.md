@@ -299,3 +299,26 @@ git push origin codex/restructure
 | Q7 | AI Chat 请求失败，只返回"抱歉，我现在无法回答问题" | ✅ **已修复** — 添加 systemPrompt |
 | Q8 | Admin 面板无入口按钮 | ✅ **已修复** — 导航栏添加 Lock 图标链接 |
 | Q9 | Admin 编辑器预览模式使用纯文本显示 | ⏳ P2 — 待后续处理 |
+
+---
+
+## v2.1.0 (2026-06-29) — Admin 弹窗登录 + 布局修复
+
+### 修复
+- [x] **Admin 登录改为弹窗** (`components/admin/admin-login-modal.tsx`)
+  - Lock 按钮未登录时弹出模态登录弹窗，保持当前页面不跳转
+  - 适配 Night Cockpit 设计系统（OKLCH 色阶、圆角、毛玻璃背板）
+  - 支持 Enter 提交、loading 动画、错误提示
+- [x] **Admin Layout Guard 修复** (`app/admin/layout.tsx`)
+  - 添加 `initialized` 状态避免闪烁
+  - Guard 按钮改用 `window.location.href` 导航，修复点击无反应问题
+  - 按钮从纯文字改为完整样式（px-4 py-2 rounded-xl bg-accent）
+- [x] **移动端菜单** — 仅已登录时显示"管理后台"链接
+
+### 已知问题更新
+| # | 问题 | 状态 |
+|---|------|------|
+| Q7 | AI Chat 请求失败 | ✅ **已修复** |
+| Q8 | Admin 面板无入口按钮 | ✅ **已修复** |
+| Q9 | Admin 编辑器预览纯文本 | ⏳ P2 |
+| Q10 | `router.push` 在 admin layout guard 中不响应 | ✅ **已修复** — 改用 `window.location.href` |

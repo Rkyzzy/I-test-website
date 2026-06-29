@@ -166,3 +166,58 @@ body {
     scroll-behavior: auto !important;
   }
 }
+ 
+ /* ───── Light Mode ───── */
+ .light body,
+ html.light body {
+   background-color: oklch(0.97 0.005 250);
+   color: oklch(0.15 0.02 260);
+ }
+ 
+ .light ::selection {
+   background: oklch(0.62 0.19 220 / 0.3);
+   color: oklch(0.15 0.02 260);
+ }
+ 
+ .light ::-webkit-scrollbar-track { background: oklch(0.97 0.005 250); }
+ .light ::-webkit-scrollbar-thumb { background: oklch(0.85 0.01 250); }
+ .light ::-webkit-scrollbar-thumb:hover { background: oklch(0.75 0.02 250); }
+ 
+ .light .card-surface {
+   background: oklch(0.95 0.01 255);
+   border-color: oklch(0.88 0.015 250);
+ }
+ 
+ .light .card-surface:hover {
+   border-color: oklch(0.62 0.19 220 / 0.4);
+   box-shadow: 0 0 20px oklch(0.62 0.19 220 / 0.12);
+ }
+ 
+ .light .blog-content p,
+ .light .blog-content ul,
+ .light .blog-content ol {
+   color: oklch(0.35 0.02 260);
+ }
+ 
+ .light .blog-content code {
+   background: oklch(0.92 0.01 255);
+ }
+ 
+ .light .blog-content pre {
+   background: oklch(0.93 0.01 255);
+   border-color: oklch(0.88 0.015 250);
+ }
+ 
+ .light .blog-content blockquote {
+   color: oklch(0.55 0.02 260);
+ }
+ 
+ .light .text-deck-100 { color: oklch(0.15 0.02 260) !important; }
+ .light .text-deck-200 { color: oklch(0.25 0.02 260) !important; }
+ .light .text-deck-300 { color: oklch(0.40 0.02 260) !important; }
+ .light .text-deck-400 { color: oklch(0.55 0.02 260) !important; }
+ .light .bg-deck-800 { background-color: oklch(0.95 0.01 255) !important; }
+ .light .bg-deck-900 { background-color: oklch(0.97 0.005 250) !important; }
+ .light .border-deck-600 { border-color: oklch(0.88 0.015 250) !important; }
+ .light .border-deck-600\/50 { border-color: oklch(0.88 0.015 250 / 0.5) !important; }
+ .light .border-deck-600\/30 { border-color: oklch(0.88 0.015 250 / 0.3) !important; }

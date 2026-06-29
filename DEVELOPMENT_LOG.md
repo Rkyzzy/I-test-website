@@ -194,3 +194,79 @@ BASE_PATH="/preview/test" npm run build  # 预览分支构建
 git push origin codex/restructure
 # 去 GitHub 创建 PR → Merge → 自动部署
 ```
+
+## v2.0.0 追加 (2026-06-29) — AI Chat + Admin + Theme
+
+### 新增已完成
+
+#### AI Chat 页面
+- [x] **`components/ai/ai-chat.tsx`** — 完整 AI 对话组件
+  - 快捷提问（4 个预置问题）
+  - 消息气泡（user/assistant 双向排版）
+  - 自动调整高度的文本输入框 (Shift+Enter 换行)
+  - 加载动画（弹跳圆点）
+  - 错误提示 + 容错处理
+  - localStorage 历史持久化
+  - 调用 Cloudflare Worker `ai.rkyzzy.xyz` (DeepSeek 后端)
+- [x] **`app/ai/page.tsx`** — 替换占位页面，集成 AIChat 组件
+
+#### Admin 面板
+- [x] **`lib/github.ts`** — GitHub API 服务
+  - `getFile()` / `writeFile()` / `deleteFile()` — GitHub Contents API
+  - `savePost()` — 保存博客 markdown
+  - `saveConfig()` / `getConfig()` — 配置管理
+- [x] **`app/admin/layout.tsx`** — Admin 布局
+  - 置顶导航栏 + 返回/路由/退出
+  - Auth guard（未登录时提示跳转）
+- [x] **`app/admin/login/page.tsx`** — 管理员登录
+  - GitHub PAT (Personal Access Token) 输入
+  - 验证 token + 校验用户名 `Rkyzzy`
+  - 持久化到 localStorage
+- [x] **`app/admin/page.tsx`** — 仪表盘
+  - 统计卡片（总文章/标签数/分类数）
+  - 文章列表（预览/编辑/删除）
+  - 新建文章按钮
+- [x] **`app/admin/edit/page.tsx`** — 文章编辑器
+  - 编辑/新建双模式（slug query param 区分）
+  - 加载现有文章的 frontmatter + markdown 内容
+  - 标题/Slug/日期/分类/标签/封面/摘要 编辑
+  - 写/预览 双栏模式
+  - 保存到 GitHub API + 更新 posts.json 索引
+
+#### 昼夜模式修复
+- [x] **`app/globals.css`** — 添加 `.light` CSS 变量
+  - 背景: oklch(0.97 0.005 250) 亮白
+  - 文字色阶完整映射 (deck-100~400)
+  - 表面色/border/滚动条/选择样式
+  - Card hover/box-shadow
+  - Blog content 段落/代码/引用
+  - 关键 utility 类 override (!important 覆盖 dark 默认值)
+
+#### 构建验证
+- [x] 20/20 页面全部生成 (新增 3 个 admin 页面)
+- [x] TypeScript 编译通过，无类型错误
+
+### 更新后的 TODO
+
+#### P0
+- [ ] 学校 Logo 图片补充 (sustech-logo.svg, berkeley-logo.svg)
+
+#### P1
+- [ ] blog-content Markdown 样式打磨（代码高亮已安装但未启用）
+- [ ] 字体 fallback 设置
+- [ ] Profile 头像从 `loadConfig()` 获取
+
+#### P2
+- [ ] SEO 完善（每个页面独立的 generateMetadata）
+- [ ] 页面切换过渡 (AnimatePresence)
+- [ ] 文章目录 TOC
+- [ ] 阅读进度条
+- [ ] 代码高亮集成 (rehype-highlight 已装)
+- [ ] 分页 / 加载更多
+- [ ] Tags 页面链接可点击跳转
+
+### 已知问题
+| # | 问题 | 状态 |
+|---|------|------|
+| Q5 | Admin 编辑器预览模式使用纯文本，非 Markdown 渲染 | 可接受，后续可集成 react-markdown |
+| Q6 | AI Chat Worker 未部署到 Cloudflare（需手动 `wrangler deploy`） | 待处理 |

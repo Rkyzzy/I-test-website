@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/* ───── Design Tokens ───── */
+@theme {
+  --color-deck-900: oklch(0.07 0.03 260);
+  --color-deck-800: oklch(0.10 0.035 255);
+  --color-deck-700: oklch(0.14 0.04 250);
+  --color-deck-600: oklch(0.20 0.045 245);
+  --color-deck-500: oklch(0.30 0.05 240);
+  --color-deck-400: oklch(0.45 0.06 235);
+  --color-deck-300: oklch(0.70 0.03 240);
+  --color-deck-200: oklch(0.82 0.015 245);
+  --color-deck-100: oklch(0.92 0.01 250);
+  --color-signal: oklch(0.75 0.18 160);
+  --color-signal-dim: oklch(0.50 0.12 160);
+  --color-accent: oklch(0.62 0.19 220);
+  --color-accent-dim: oklch(0.45 0.14 220);
+  --color-warm: oklch(0.68 0.15 30);
+  --color-warm-dim: oklch(0.50 0.10 30);
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ───── Base ───── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-deck-900);
+  color: var(--color-deck-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-deck-900);
+}
+
+/* ───── Scrollbar ───── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-deck-900); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-deck-600);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-deck-500); }
+
+/* ───── Utilities ───── */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    oklch(0.62 0.19 220 / 0.6) 20%,
+    oklch(0.62 0.19 220 / 0.8) 50%,
+    oklch(0.62 0.19 220 / 0.6) 80%,
+    transparent 100%
+  );
+  filter: blur(1px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-deck-100), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.3;
+}
+
+.card-surface {
+  background: var(--color-deck-800);
+  border: 1px solid var(--color-deck-600);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-surface:hover {
+  border-color: var(--color-accent-dim);
+  box-shadow: 0 0 20px oklch(0.62 0.19 220 / 0.08);
+}
+
+/* ───── Blog prose ───── */
+.blog-content h1, .blog-content h2, .blog-content h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content p {
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: var(--color-deck-200);
+}
+
+.blog-content code {
+  font-family: var(--font-mono);
+  background: var(--color-deck-700);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+.blog-content pre {
+  background: var(--color-deck-800);
+  border: 1px solid var(--color-deck-600);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.blog-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.blog-content ul, .blog-content ol {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--color-deck-200);
+}
+
+.blog-content li {
+  margin-bottom: 0.25rem;
+}
+
+.blog-content blockquote {
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  color: var(--color-deck-400);
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.blog-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.blog-content img {
+  border-radius: 8px;
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

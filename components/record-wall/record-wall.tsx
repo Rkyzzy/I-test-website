@@ -41,32 +41,26 @@ function getItemStyle(index: number, scrollLeft: number, viewportWidth: number, 
   const clamped    = Math.max(-1.8, Math.min(1.8, distance));
   const absDist    = Math.abs(clamped);
 
-  if (absDist > 1.5) {
-    return {
-      opacity: 0,
-      pointerEvents: "none" as const,
-      zIndex: 0,
-      transform: "none",
-      visibility: "hidden" as const,
-    };
-  }
-
+  // No visibility: hidden toggle — use smoothstep for ALL items
+  // to prevent browser scroll anchoring from fighting with 3D transforms
   const t      = Math.min(absDist, 1);
   const smooth = t * t * (3 - 2 * t);
 
+  // Extend fade range: items start fully invisible around |distance| > 1.2
   const scale      = 1.12 - 0.62 * smooth;
   const rotateY    = -clamped * 62;
   const translateZ = (1 - smooth) * 160;
-  const opacity    = 1 - 0.55 * smooth;
+  const fade       = Math.max(0, 1 - smooth * 2.2);  // stronger fade at edges
   const blur       = smooth * 1.2;
 
   return {
     transform: `perspective(900px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
     zIndex: Math.round(1000 - absDist * 600),
-    opacity,
+    opacity: fade,
     filter: `blur(${blur}px)`,
     position: "relative" as const,
     visibility: "visible" as const,
+    pointerEvents: (fade < 0.05 ? "none" : "auto") as "none" | "auto",
   };
 }
 
@@ -121,7 +115,7 @@ export default function RecordWall() {
           className="record-wall-track"
           style={{
             paddingLeft: padLeft,
-            paddingRight: padLeft + 200,
+            paddingRight: padLeft + 400,  // extra breathing room at right edge
           }}
         >
           {ALBUMS.map((album, index) => (

@@ -1,0 +1,112 @@
+.record-wall-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+}
+
+.record-wall-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 160px;
+  z-index: 20;
+  pointer-events: none;
+}
+.fade-left  { left: 0;  background: linear-gradient(to right, oklch(0.07 0.03 260) 0%, transparent 100%); }
+.fade-right { right: 0; background: linear-gradient(to left,  oklch(0.07 0.03 260) 0%, transparent 100%); }
+
+.light .fade-left  { background: linear-gradient(to right, oklch(0.97 0.005 250) 0%, transparent 100%); }
+.light .fade-right { background: linear-gradient(to left,  oklch(0.97 0.005 250) 0%, transparent 100%); }
+
+.record-wall-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.record-wall-scroll::-webkit-scrollbar { display: none; }
+
+.record-wall-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.record-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
+  margin-right: -20px;
+}
+
+.record-cover {
+  width: 160px;
+  height: 160px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--color-1), var(--color-2));
+  flex-shrink: 0;
+  position: relative;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.6),
+    inset 0 0 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.record-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.record-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+  width: 160px;
+}
+
+.record-title {
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  letter-spacing: 0.02em;
+}
+
+.light .record-title {
+  color: oklch(0.15 0.02 260);
+}
+
+.record-artist {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.62rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-weight: 400;
+}
+
+.light .record-artist {
+  color: rgba(0, 0, 0, 0.45);
+}

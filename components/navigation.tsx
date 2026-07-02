@@ -5,12 +5,29 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { useAdmin } from "./admin/admin-context";
-import { Moon, Sun, Menu, X, Lock, PenLine, LogOut } from "lucide-react";
+import { Moon, Sun, Menu, X, Lock, PenLine, LogOut, ChevronDown } from "lucide-react";
 import AdminLoginModal from "./admin/admin-login-modal";
 
-const NAV_LINKS = [
+interface NavItem {
+  name: string;
+  path: string;
+  children?: NavItem[];
+}
+
+const NAV_LINKS: NavItem[] = [
   { name: "首页", path: "/" },
   { name: "博客", path: "/blog" },
+  {
+    name: "兴趣",
+    path: "/interests",
+    children: [
+      { name: "运动", path: "/interests/sports" },
+      { name: "游戏", path: "/interests/games" },
+      { name: "音乐", path: "/interests/music" },
+      { name: "书籍", path: "/interests/books" },
+      { name: "电影", path: "/interests/movies" },
+    ],
+  },
   { name: "教育", path: "/education" },
   { name: "工作", path: "/work" },
   { name: "AI 对话", path: "/ai" },
@@ -23,12 +40,23 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [interestsOpen, setInterestsOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close interests dropdown when navigating
+  useEffect(() => {
+    setInterestsOpen(false);
+  }, [pathname]);
+
+  const isActive = (path: string) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
 
   return (
     <header
@@ -48,19 +76,68 @@ export default function Navigation() {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.path}
-              href={link.path}
-              className={`text-sm font-medium transition-colors ${
-                pathname === link.path
-                  ? "text-accent"
-                  : "text-deck-300 hover:text-deck-100"
-              }`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.children ? (
+              <div key={link.path} className="relative">
+                <button
+                  onClick={() => setInterestsOpen(!interestsOpen)}
+                  onMouseEnter={() => setInterestsOpen(true)}
+                  onMouseLeave={() => setInterestsOpen(false)}
+                  className={`flex items-center gap-1 text-sm font-medium transition-colors cursor-pointer ${
+                    isActive(link.path)
+                      ? "text-accent"
+                      : "text-deck-300 hover:text-deck-100"
+                  }`}
+                >
+                  {link.name}
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      interestsOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {interestsOpen && (
+                  <div
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2"
+                    onMouseEnter={() => setInterestsOpen(true)}
+                    onMouseLeave={() => setInterestsOpen(false)}
+                  >
+                    <div className="bg-deck-800 border border-deck-600 rounded-xl py-2 min-w-[130px] shadow-xl backdrop-blur-xl">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.path}
+                          href={child.path}
+                          className={`block px-4 py-2 text-sm transition-colors ${
+                            pathname === child.path
+                              ? "text-accent bg-accent/5"
+                              : "text-deck-300 hover:text-deck-100 hover:bg-deck-700/50"
+                          }`}
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={link.path}
+                href={link.path}
+                className={`text-sm font-medium transition-colors ${
+                  link.path === "/"
+                    ? pathname === "/"
+                      ? "text-accent"
+                      : "text-deck-300 hover:text-deck-100"
+                    : isActive(link.path)
+                    ? "text-accent"
+                    : "text-deck-300 hover:text-deck-100"
+                }`}
+              >
+                {link.name}
+              </Link>
+            )
+          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -166,20 +243,62 @@ export default function Navigation() {
                 </button>
               </>
             )}
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.path}
-                href={link.path}
-                onClick={() => setMobileOpen(false)}
-                className={`block text-sm font-medium transition-colors ${
-                  pathname === link.path
-                    ? "text-accent"
-                    : "text-deck-300 hover:text-deck-100"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.children ? (
+                <div key={link.path}>
+                  <div
+                    className={`flex items-center gap-1 text-sm font-medium transition-colors cursor-pointer ${
+                      isActive(link.path)
+                        ? "text-accent"
+                        : "text-deck-300"
+                    }`}
+                    onClick={() => setInterestsOpen(!interestsOpen)}
+                  >
+                    {link.name}
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        interestsOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                  {interestsOpen && (
+                    <div className="ml-4 mt-2 space-y-2 border-l border-deck-600/50 pl-3">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.path}
+                          href={child.path}
+                          onClick={() => setMobileOpen(false)}
+                          className={`block text-sm transition-colors ${
+                            pathname === child.path
+                              ? "text-accent"
+                              : "text-deck-400 hover:text-deck-100"
+                          }`}
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm font-medium transition-colors ${
+                    link.path === "/"
+                      ? pathname === "/"
+                        ? "text-accent"
+                        : "text-deck-300 hover:text-deck-100"
+                      : isActive(link.path)
+                      ? "text-accent"
+                      : "text-deck-300 hover:text-deck-100"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              )
+            )}
           </div>
         </div>
       )}
